@@ -15,7 +15,7 @@ interface TableData {
     name: string,
     address: string,
 }
-我在这里
+
 const tableConfig: TableConfig<TableData> = reactive({
     columns: [
         {
