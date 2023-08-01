@@ -13,7 +13,7 @@ import {onMounted, reactive, ref} from "vue";
 interface TableData {
     date: string,
     name: string,
-    address: string
+    address: string,
 }
 
 const tableConfig: TableConfig<TableData> = reactive({
