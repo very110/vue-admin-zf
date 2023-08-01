@@ -1,0 +1,82 @@
+//项目提供scss全局变量
+
+
+
+
+//定义响应式混入函数
+$breakpoints:(
+        phone:(320px,480px),
+        pad:(481px,768px)
+);
+@mixin reactiveMixin($screenType){
+    $cur:map-get($breakpoints,$screenType);
+    $min:nth($cur,1);
+    $max:nth($cur,2);
+    @if (type-of($cur)=='list') {
+        @media (width >= $min) and (width<=$max){
+            @content;
+        }
+    }
+}
+
+//定义项目主题颜色混入
+$Themes: (
+        light:(
+                bgColor:#ecf0f3,
+                textColor:#000,
+                loginBg:#ecf0f3,
+                menuAndTabbarBG:#f5f9fa,
+                hoverMenuItem:linear-gradient(to right, #42b0ff, #65bfff,transparent)
+
+        ),
+
+
+        dark:(
+                bgColor:#242c51,
+                textColor:#cddbf1,
+                loginBg:#242c51,
+                menuAndTabbarBG:#242c51,
+                hoverMenuItem:linear-gradient(to right, #3d8bf3,#356cbf,transparent)
+
+        )
+
+);
+
+@mixin customTheme($themeOption){
+
+    html[data-theme=#{$themeOption}] & {
+      @content;
+    }
+
+}
+
+$_curTheme:light;
+@mixin themeColors {
+  @each $key, $val in $Themes {
+    html[data-theme=#{$key}] & {
+      transition:.3s linear;
+      $_curTheme:$val !global;
+      @content;
+    }
+  }
+}
+
+@function getThemeValues($key){
+   @return map-get($_curTheme,$key);
+}
+
+
+//左侧的菜单的宽度
+$base-menu-width: 200px;
+//左侧菜单的背景颜色
+$base-menu-background: #001529;
+$base-menu-min-width: 50px;
+
+// 顶部导航的高度
+$base-tabbar-height: 50px;
+
+//左侧菜单logo高度设置
+$base-menu-logo-height: 50px;
+
+//左侧菜单logo右侧文字大小
+$base-logo-title-fontSize: 20px;
