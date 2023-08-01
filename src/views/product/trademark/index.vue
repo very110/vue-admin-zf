@@ -15,6 +15,7 @@ interface TableData {
     name: string,
     address: string,
 }
+
 const tableConfig: TableConfig<TableData> = reactive({
     columns: [
         {
