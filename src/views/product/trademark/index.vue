@@ -15,7 +15,6 @@ interface TableData {
     name: string,
     address: string,
 }
-试试能不能俩个一起上传1232
 const tableConfig: TableConfig<TableData> = reactive({
     columns: [
         {
