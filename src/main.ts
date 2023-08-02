@@ -18,5 +18,7 @@ app.use(ElementPlus, {
 import gloablComponent from './components/index';
 app.use(gloablComponent);
 app.use(router);
+import {directiveResize} from "@/directive/resize.ts";
+directiveResize(app);
 app.mount("#app");
 

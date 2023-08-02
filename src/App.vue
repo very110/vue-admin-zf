@@ -45,7 +45,7 @@ setTheme(theme);
 </style>
 <style>
 ::-webkit-scrollbar {
-    width: 1px;
+    width: 2px;
 }
 
 
