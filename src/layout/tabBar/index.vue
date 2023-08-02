@@ -98,7 +98,8 @@
                message: e.message
            })
        }
-      $router.push({path:'/login',query:{redirect:$route.path}});
+      await $router.push({path:'/login'});
+
   }
 
 </script>
