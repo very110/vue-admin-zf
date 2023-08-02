@@ -2,7 +2,7 @@
     <div >
         <TablePlus :data="tableData" :config="tableConfig"  ref="tabplus">
         </TablePlus>
-        1234567890
+
     </div>
 </template>
 
