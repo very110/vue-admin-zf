@@ -20,7 +20,7 @@
                        :text-color="themeColor.textColor"
                    >
                        <Menu :menuList="constRoutes"></Menu>
-                       <el-menu-item style="display:none" ></el-menu-item>
+
                    </el-menu>
                </div>
             </div>

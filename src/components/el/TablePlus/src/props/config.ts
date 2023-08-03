@@ -1,7 +1,7 @@
 type types='txt'|'tag'|'callback'|'slot';
 export interface TableColumns<U extends Object>{
     types:types,
-    prop:keyof U,
+    prop?:keyof U,
     label:string,
     width?:number,
     callback?:(row:U)=>any,//默认插槽对数据进行操作

@@ -4,6 +4,7 @@
                 :highlight-current-row="true"
                 v-bind="$attrs"
                 ref="MyTable">
+          <el-table-column type="selection" v-if="config.checkbox" width="35"></el-table-column>
           <el-table-column ref="MyColumns" v-for="(item, index) in config.columns"
                            :key="index"
                            align="center"
@@ -21,30 +22,42 @@
                         <slot :name="name"></slot>
                 </template>
       </el-table>
-      <el-pagination class="scale" style="justify-content: center;" background layout="prev,pager,next,->,total,sizes,jumper" :total="100" v-if="!paginationConfig.hidden" v-bind="paginationConfig"  v-on="paginationConfig.events||{}"/>
+      <el-pagination class="scale"
+                     style="justify-content: center;"
+                     background
+                     :hide-on-single-page="true"
+                     layout="prev,pager,next,->,total,sizes,jumper"
+                     v-if="!paginationConfig.hidden"
+                     @size-change="sizeChange"
+                     @current-change="emit('ChangeGetData',paginationConfig['current-page'],paginationConfig['page-size'])"
+                     v-bind="paginationConfig"
+                     :page-sizes="[3,6,9,12]"
+                     v-model:page-size="paginationConfig['page-size']"
+                     v-model:current-page="paginationConfig['current-page']"
+                     v-on="paginationConfig.events||{}"/>
   </div>
 </template>
 
 <script setup lang="ts" name="TablePlus">
-import {onMounted, reactive, ref, toRefs, useAttrs, useSlots} from "vue";
+import {onMounted, reactive, ref, toRefs, useAttrs, useSlots,computed} from "vue";
 import type{TableConfig} from "@/components/el/TablePlus/src/props/config.ts";
-const emit=defineEmits(['']);
-
+const emit=defineEmits(['ChangeGetData'])
 // noinspection TypeScriptValidateTypes
 const props=withDefaults(defineProps<
     {
         data:Array<any>,
         config:TableConfig<any>,
-        paginationConfig:Object
+        paginationConfig:Object,
     }
 >(),{
     data:()=>[],
     config:()=>{},
-    paginationConfig:()=>{}
+    paginationConfig:()=>{},
 })
-
-
-const {data,config,paginationConfig}=toRefs(props);
+const sizeChange=(pageSize)=>{
+    emit('ChangeGetData');
+}
+let {data,config,paginationConfig}=toRefs(props);
 const MyTable=ref(null);
 const MyColumns=ref(null);
 defineExpose({
