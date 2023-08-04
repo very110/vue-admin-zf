@@ -5,7 +5,6 @@ export interface loginFormData {
     password: string
 }
 
-//定义全部接口返回数据都拥有ts类型
 
 
 //定义登录接口返回数据类型
