@@ -20,7 +20,6 @@
                            <el-button type="danger" :icon="Delete"></el-button>
                        </template>
                    </el-popconfirm>
-
                </template>
            </TablePlus>
        </el-card>
