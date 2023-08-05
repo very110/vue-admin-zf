@@ -5,19 +5,18 @@
                 v-bind="$attrs"
                 ref="MyTable">
           <el-table-column type="selection" v-if="config.checkbox" width="35"></el-table-column>
-          <el-table-column ref="MyColumns" v-for="(item, index) in config.columns"
-                           :key="index"
-                           align="center"
-                           v-bind="item"
-            >
-          <template #default="{row}">
-             <p v-if="item.types==='callback'">{{item.callback(row)}}</p>
-             <slot :name="item.slotName" v-if="item.slotName" :row="row"></slot>
-          </template>
-              <template #header="{column}" v-if="item.slotHeader">
-                    <slot :name="item.slotHeader" :column="column"></slot>
-              </template>
-          </el-table-column>
+                  <el-table-column ref="MyColumns" v-for="(item, index) in config.columns"
+                                   :key="index"
+                                   align="center"
+                                   v-bind="item">
+                      <template #default="{row}">
+                          <p v-if="item.types==='callback'">{{item.callback(row)}}</p>
+                          <slot :name="item.slotName" v-if="item.slotName" :row="row"></slot>
+                      </template>
+                      <template #header="{column}" v-if="item.slotHeader">
+                          <slot :name="item.slotHeader" :column="column"></slot>
+                      </template>
+                  </el-table-column>
                 <template v-for="(value,name) in $slots" #[name]>
                         <slot :name="name"></slot>
                 </template>
@@ -29,7 +28,7 @@
                      layout="prev,pager,next,->,total,sizes,jumper"
                      v-if="!paginationConfig.hidden"
                      @size-change="sizeChange"
-                     @current-change="emit('ChangeGetData',paginationConfig['current-page'],paginationConfig['page-size'])"
+                     @current-change="emit('ChangeGetData',paginationConfig['current-page'])"
                      v-bind="paginationConfig"
                      :page-sizes="[3,6,9,12]"
                      v-model:page-size="paginationConfig['page-size']"
@@ -78,6 +77,26 @@ defineExpose({
   }
 }
 
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+@keyframes fade {
+    0%{
+      opacity: 0;
+      transform:translateX(-30px);
+    }
+  100%{
+    opacity: 1;
+
+  }
+}
 
 
 

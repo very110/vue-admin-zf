@@ -2,7 +2,7 @@
   <div class="formPlus">
       <el-form :model="formData" v-bind="$attrs" ref="myElForm">
              <el-form-item v-for="(formItem,index) in formConfig.formItems"
-                           v-bind="formItem.bind"
+                           v-bind="formItem.itemBind"
                            ref="elFormItems"
                            :key="index">
                     <Component v-if="formItem.type==='slot'" :is="formItem.element?.elementName" v-bind="formItem.element" v-model="formData[formItem.element?.vModel]">
@@ -11,12 +11,24 @@
                                     <slot :name="formItem.element?.mySlotName?.[index]" v-bind="scope||{}"></slot>
                                 </template>
                     </Component>
+                 <el-upload
+                         v-if="formItem.type==='upload'"
+                         class="avatar-uploader"
+                         :action="formItem.options.action"
+                         :show-file-list="false"
+                         :on-success="formItem.options.onSuccess"
+                         :before-upload="formItem.options.beforeUpload"
+                         v-bind="formItem.options.bind"
+                 >
+                     <img v-if="formItem.options.imgUrl" :src="formItem.options.imgUrl" class="avatar" />
+                     <el-icon v-else class="avatar-uploader-icon"><Component :is="formItem.options.icon?formItem.options.icon:'Plus'"></Component></el-icon>
+                 </el-upload>
              </el-form-item>
 
-            <el-form-item v-if="formConfig.confirmAndReset">
+            <el-form-item v-if="formConfig.confirmAndReset" style="width: 100%;">
                 <div class="ggc" :style="{justifyContent:align}">
                     <el-button type="primary" @click="submitForm">确定</el-button>
-                    <el-button @click="resetForm(myElForm)">重置</el-button>
+                    <el-button @click="resetForm">重置</el-button>
                 </div>
             </el-form-item>
       </el-form>
@@ -49,23 +61,27 @@ const align= computed(()=>{
     return alignEnum[formConfig.value.confirmAndReset?.align];
 })
 
-const resetForm=(elForm:FormInstance)=>{
-    if (!elForm) return;
-    elForm.resetFields();
+const resetForm=()=>{
+    if (!myElForm) return;
+    console.log(1)
+   myElForm.value.resetFields()
 }
-const submitForm=async (elForm:FormInstance)=>{
-    if (!elForm) return;
+const submitForm=async ()=>{
+    if (!myElForm) return;
+       await myElForm.value?.validate()
+       try {
+           formConfig.value.confirmAndReset?.validateSuccess();
+       }catch (e) {
+           ElMessage({
+               type: 'success',
+               message:e.message
+           });
+       }
 
-   try {
-       await elForm.validate();
-       formConfig.value.confirmAndReset?.validateSuccess();
-   }catch (e) {
-       ElMessage({
-           type:'error',
-           message:e.message
-       })
-   }
 }
+defineExpose({
+    'myFrom':myElForm
+})
 </script>
 
 
@@ -77,5 +93,34 @@ const submitForm=async (elForm:FormInstance)=>{
   height: 100%;
   display: flex;
   align-items: center;
+}
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
+<style>
+.avatar-uploader .el-upload {
+    border: 1px dashed var(--el-border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+    border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 20vw;/* px-to-viewport-ignore */
+    height: 20vw;
+    max-width: 178px;
+    max-height: 178px;
+    text-align: center;
 }
 </style>

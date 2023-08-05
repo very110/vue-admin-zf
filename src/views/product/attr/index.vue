@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <FormPlus :formData="formData" :formConfig="formConfig">
+        <FormPlus :formData="formData" :formConfig="formConfig" inline>
 
         </FormPlus>
     </div>
@@ -21,7 +21,7 @@ let formConfig = reactive<FormConfig<typeof formData>>({
     formItems: [
         {
             type:"slot",
-            bind: {
+            itemBind: {
                 label: 'zzf',
                 prop: "user",
             },
@@ -35,7 +35,7 @@ let formConfig = reactive<FormConfig<typeof formData>>({
         {
             type:"slot",
 
-            bind: {
+            itemBind: {
                 label: 'zzf',
                 prop: "region",
             },
@@ -48,7 +48,7 @@ let formConfig = reactive<FormConfig<typeof formData>>({
         },
         {
             type:"slot",
-            bind: {
+            itemBind: {
                 label: 'zzf',
                 prop: "date",
             },

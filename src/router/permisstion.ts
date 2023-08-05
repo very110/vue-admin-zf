@@ -14,20 +14,20 @@ router.beforeEach(async (to, from, next)=>{
         if (token){
             if (to.path==='/login'){
                 next('/');
+
             }
             if (userName){
+
                 next();
             }else{
                 try {
+
                     await userStore.userInfo();
+
                     next({...to})
                 }catch (e){
-                   await userStore.userLogout().catch(()=>{
-                        ElMessage({
-                            message: '退出失败',
-                            type: 'error',
-                        })
-                    })
+
+                   await userStore.userLogout()
                     ElMessage({
                         message: '登录过期请重新登录',
                         type: 'warning',
