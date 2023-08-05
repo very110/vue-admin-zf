@@ -11,7 +11,7 @@
                                    v-bind="item">
                       <template #default="{row}">
                           <p v-if="item.types==='callback'">{{item.callback(row)}}</p>
-                          <slot :name="item.slotName" v-if="item.slotName" :row="row"></slot>
+                          <slot :name="item.slotName" v-if="item.types==='slot'" :row="row"></slot>
                       </template>
                       <template #header="{column}" v-if="item.slotHeader">
                           <slot :name="item.slotHeader" :column="column"></slot>
@@ -26,7 +26,7 @@
                      background
                      :hide-on-single-page="true"
                      layout="prev,pager,next,->,total,sizes,jumper"
-                     v-if="!paginationConfig.hidden"
+                     v-if="!paginationConfig?.hidden"
                      @size-change="sizeChange"
                      @current-change="emit('ChangeGetData',paginationConfig['current-page'])"
                      v-bind="paginationConfig"

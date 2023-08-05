@@ -23,8 +23,8 @@
                      <img v-if="formItem.options.imgUrl" :src="formItem.options.imgUrl" class="avatar" />
                      <el-icon v-else class="avatar-uploader-icon"><Component :is="formItem.options.icon?formItem.options.icon:'Plus'"></Component></el-icon>
                  </el-upload>
-             </el-form-item>
 
+             </el-form-item>
             <el-form-item v-if="formConfig.confirmAndReset" style="width: 100%;">
                 <div class="ggc" :style="{justifyContent:align}">
                     <el-button type="primary" @click="submitForm">确定</el-button>

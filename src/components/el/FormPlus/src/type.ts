@@ -1,6 +1,6 @@
 import type {FormItemRule} from "element-plus";
 
-type Type = 'slot' | 'radio'|'upload';
+type Type = 'slot'|'upload'|'select';
 
 export interface childrenItem<T> {
     elementName?: string | any,
