@@ -1,7 +1,7 @@
 <template>
   <div>
       <el-table :data="data"
-                :highlight-current-row="true"
+                border
                 v-bind="$attrs"
                 ref="MyTable">
           <el-table-column type="selection" v-if="config.checkbox" width="35"></el-table-column>
@@ -9,9 +9,14 @@
                                    :key="index"
                                    align="center"
                                    v-bind="item">
-                      <template #default="{row}">
+                      <template #default="{row,$index}">
                           <p v-if="item.types==='callback'">{{item.callback(row)}}</p>
-                          <slot :name="item.slotName" v-if="item.types==='slot'" :row="row"></slot>
+                          <slot :name="item.slotName" v-if="item.types==='slot'" :row="row" :$index="$index"></slot>
+                          <template v-if="item.types==='tag'">
+                                  <el-tag  v-for="(tagItem,index) in tagHandler(item,row)"  :key="index" v-bind="tagItem.bind||{}" v-on="tagItem.events||{}" style="margin-left: 5px">
+                                      {{tagItem.name}}
+                                  </el-tag>
+                          </template>
                       </template>
                       <template #header="{column}" v-if="item.slotHeader">
                           <slot :name="item.slotHeader" :column="column"></slot>
@@ -59,6 +64,17 @@ const sizeChange=(pageSize)=>{
 let {data,config,paginationConfig}=toRefs(props);
 const MyTable=ref(null);
 const MyColumns=ref(null);
+
+const tagHandler=(item,row)=>{
+    let result=row.tagArr;
+    if (!result){
+        result=item.callback(row)
+        row.tagArr=result;
+        return result;
+    }
+    return result;
+}
+
 defineExpose({
     'elTable':MyTable,
 })
