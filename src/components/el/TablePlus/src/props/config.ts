@@ -2,7 +2,7 @@ type types='txt'|'tag'|'callback'|'slot';
 import type{ComputedRef} from "vue";
 export interface TableColumns<U extends Object>{
     types?:types,
-    prop?:keyof U|any,
+    prop?:keyof U,
     label?:string,
     width?:number,
     callback?:(row:U,...args:any[])=>any |any,//默认插槽对数据进行操作

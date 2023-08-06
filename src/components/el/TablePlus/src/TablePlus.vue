@@ -7,6 +7,7 @@
           <el-table-column type="selection" v-if="config.checkbox" width="35"></el-table-column>
                   <el-table-column ref="MyColumns" v-for="(item, index) in config.columns"
                                    :key="index"
+                                    show-overflow-tooltip
                                    align="center"
                                    v-bind="item">
                       <template #default="{row,$index}">
@@ -27,7 +28,8 @@
                 </template>
       </el-table>
       <el-pagination class="scale"
-                     style="justify-content: center;"
+
+                     style="justify-content: center;margin-top: 20px"
                      background
                      :hide-on-single-page="true"
                      layout="prev,pager,next,->,total,sizes,jumper"

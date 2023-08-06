@@ -11,6 +11,17 @@
                                     <slot :name="formItem.element?.mySlotName?.[index]" v-bind="scope||{}"></slot>
                                 </template>
                     </Component>
+                 <el-select v-model="formItem.options.value"
+                            v-if="formItem.type==='select'"
+                            :placeholder="formItem.options.label"
+                            v-bind="formItem.options.bind">
+                     <el-option
+                             v-for="item in formItem.options.arrOptions"
+                             :key="item.value"
+                             :label="item.label"
+                             :value="item.value"
+                     />
+                 </el-select>
                  <el-upload
                          v-if="formItem.type==='upload'"
                          class="avatar-uploader"

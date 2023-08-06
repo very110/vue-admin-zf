@@ -18,7 +18,7 @@ export interface FormItem<T> {
         rules?: FormItemRule,
         [key: string]: any
     },
-    element?: childrenItem<T>,
+    element?: childrenItem<T>,//给slot使用的
     type?: Type,
     options?:any
 }
