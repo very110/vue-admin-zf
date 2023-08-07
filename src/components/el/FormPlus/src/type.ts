@@ -15,7 +15,7 @@ export interface FormItem<T> {
     itemBind: {
         label?: string,
         prop?: keyof T,
-        rules?: FormItemRule,
+        rules?: FormItemRule[],
         [key: string]: any
     },
     element?: childrenItem<T>,//给slot使用的
@@ -27,6 +27,7 @@ export interface FormConfig<T> {
     formItems: FormItem<T>[],
     confirmAndReset?: {
         validateSuccess?: () => void,
-        align?: 'center' | 'left' | 'right'
+        align?: 'center' | 'left' | 'right',
+        txt?:string
     }
 }

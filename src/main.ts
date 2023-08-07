@@ -19,6 +19,8 @@ import gloablComponent from './components/index';
 app.use(gloablComponent);
 app.use(router);
 import {directiveResize} from "@/directive/resize.ts";
+import {directiveFocus} from "@/directive/focus.ts";
 directiveResize(app);
+directiveFocus(app);
 app.mount("#app");
 

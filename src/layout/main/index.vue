@@ -2,7 +2,7 @@
     <div>
         <router-view v-slot="{ Component ,route}">
             <Transition name="fade" appear>
-                <component :is="!LayOutSettingStore.refsh?Component:''" :key="route.path"/>
+                <component :is="!LayOutSettingStore.refsh?Component:'div'" :key="route.path"/>
             </Transition>
         </router-view>
     </div>

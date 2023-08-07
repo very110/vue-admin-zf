@@ -17,9 +17,10 @@
                             v-bind="formItem.options.bind">
                      <el-option
                              v-for="item in formItem.options.arrOptions"
-                             :key="item.value"
-                             :label="item.label"
-                             :value="item.value"
+                             :key="item[formItem.options.subValue]"
+                             :label="item[formItem.options.subLabel]"
+                             :value="typeof formItem.options.subValue==='string'?
+                             item[formItem.options.subValue]:formItem.options.subValue(item)"
                      />
                  </el-select>
                  <el-upload
@@ -38,7 +39,7 @@
              </el-form-item>
             <el-form-item v-if="formConfig.confirmAndReset" style="width: 100%;">
                 <div class="ggc" :style="{justifyContent:align}">
-                    <el-button type="primary" @click="submitForm">确定</el-button>
+                    <el-button type="primary" @click="submitForm">{{formConfig.confirmAndReset.txt?formConfig.confirmAndReset.txt:'确定'}}</el-button>
                     <el-button @click="resetForm">重置</el-button>
                 </div>
             </el-form-item>
@@ -74,7 +75,7 @@ const align= computed(()=>{
 
 const resetForm=()=>{
     if (!myElForm) return;
-    console.log(1)
+
    myElForm.value.resetFields()
 }
 const submitForm=async ()=>{
@@ -90,6 +91,7 @@ const submitForm=async ()=>{
        }
 
 }
+
 defineExpose({
     'myFrom':myElForm
 })

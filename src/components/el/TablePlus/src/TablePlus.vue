@@ -14,9 +14,13 @@
                           <p v-if="item.types==='callback'">{{item.callback(row)}}</p>
                           <slot :name="item.slotName" v-if="item.types==='slot'" :row="row" :$index="$index"></slot>
                           <template v-if="item.types==='tag'">
-                                  <el-tag  v-for="(tagItem,index) in tagHandler(item,row)"  :key="index" v-bind="tagItem.bind||{}" v-on="tagItem.events||{}" style="margin-left: 5px">
+                              <template v-for="(tagItem,index) in tagHandler(item,row)" :key="index">
+                                  <el-tag    v-bind="tagItem.bind||{}" v-on="tagItem.events||{}" style="margin-left: 5px">
                                       {{tagItem.name}}
                                   </el-tag>
+                              </template>
+                              <el-input  :ref="(el)=>inputArr[$index]=el"  @blur="item.newTagBlur(row)" v-focus="row.flag" v-model="row[item.newTagModel]" v-if="item.newTag&&row.flag" placeholder="请输入属性值" size="small" :input-style="{width:'40%'}"></el-input>
+                              <el-button v-if="item.newTag" size="small" type="primary" :icon="Plus" style="margin: 5px" @click="toEdit(row,item.newTagModel)"></el-button>
                           </template>
                       </template>
                       <template #header="{column}" v-if="item.slotHeader">
@@ -45,8 +49,9 @@
 </template>
 
 <script setup lang="ts" name="TablePlus">
-import {onMounted, reactive, ref, toRefs, useAttrs, useSlots,computed} from "vue";
+import {onMounted, reactive, ref, toRefs, useAttrs, useSlots, computed, nextTick} from "vue";
 import type{TableConfig} from "@/components/el/TablePlus/src/props/config.ts";
+import {Plus} from "@element-plus/icons-vue";
 const emit=defineEmits(['ChangeGetData'])
 // noinspection TypeScriptValidateTypes
 const props=withDefaults(defineProps<
@@ -66,15 +71,19 @@ const sizeChange=(pageSize)=>{
 let {data,config,paginationConfig}=toRefs(props);
 const MyTable=ref(null);
 const MyColumns=ref(null);
-
+const inputArr=ref([]);
 const tagHandler=(item,row)=>{
     let result=row.tagArr;
     if (!result){
-        result=item.callback(row)
+        result=item.callback(row);
         row.tagArr=result;
         return result;
     }
     return result;
+}
+const toEdit=(row,newTagModel)=>{
+    row.flag=true;
+    row[newTagModel]='';
 }
 
 defineExpose({

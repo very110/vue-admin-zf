@@ -5,7 +5,8 @@ interface ImportMetaEnv {
     VITE_APP_BASE_API: string;
     VITE_APP_TITLE: string;
     VITE_BAIDU_API:string;
-    VITE_APP_LOGO:string
+    VITE_APP_LOGO:string,
+    VITE_APP_MODE:string
     // 更多环境变量...
 }
 

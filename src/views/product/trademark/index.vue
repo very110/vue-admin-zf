@@ -12,6 +12,7 @@
                 </template>
 
                 <template #crud="{row}">
+
                     <el-button type="primary" :icon="Edit" @click="updateTrademark(row)"></el-button>
                     <el-popconfirm :title="`确定要删除${row.tmName}吗?`"
                                    :hide-after="100"

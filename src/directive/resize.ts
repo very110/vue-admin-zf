@@ -1,6 +1,5 @@
 import type{App,DirectiveBinding}  from "vue"
 
-const normScreenshot =1280;
 // @ts-ignore
 const resizeObserver=new ResizeObserver((entries, observer)=>{
     for (const entry of entries) {

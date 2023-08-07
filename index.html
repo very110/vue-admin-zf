@@ -9,18 +9,18 @@
   <body>
     <div id="app"></div>
     <script>
-      window.addEventListener('error',(e)=>{
-     if (!(e instanceof ErrorEvent)&&e.target.tagName==='SCRIPT'){
-           let retry= sessionStorage.getItem('retry')||0;
-           if (retry<=1){
-             sessionStorage.setItem('retry',++retry);
-             location.reload(true);
-
-           }else{
-             alert('网络异常','请反馈')
-           }
-     }
-    },true)
+    //   window.addEventListener('error',(e)=>{
+    //  if (!(e instanceof ErrorEvent)&&e.target.tagName==='SCRIPT'){
+    //        let retry= sessionStorage.getItem('retry')||0;
+    //        if (retry<=1){
+    //          sessionStorage.setItem('retry',++retry);
+    //          location.reload(true);
+    //
+    //        }else{
+    //          alert('网络异常','请反馈')
+    //        }
+    //  }
+    // },true)
     </script>
     <script type="module" src="/src/main.ts"></script>
   </body>

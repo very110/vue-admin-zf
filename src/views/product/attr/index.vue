@@ -90,7 +90,7 @@ const tableConfig: TableConfig<Attr> = reactive({
             types: "tag",
             callback: (row) => {
                 let arr = row.attrValueList;
-                let result = arr.map((item, index) => {
+                let result = arr?.map((item, index) => {
                     return {
                         bind: {
                             round: true,
