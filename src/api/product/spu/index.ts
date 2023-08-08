@@ -53,9 +53,6 @@ export const reqSpuHasSaleAttr = (spuId: number) =>
 //获取全部的销售属性
 export const reqAllSaleAttr = () =>
     request.get<any, HasSaleAttrResponseData>(API.ALLSALEATTR_URL)
-//添加一个新的SPU的
-//更新已有的SPU接口
-//data:即为新增的SPU|或者已有的SPU对象
 export const reqAddOrUpdateSpu = (data: SpuData) => {
     //如果SPU对象拥有ID,更新已有的SPU
     if (data.id) {

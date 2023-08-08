@@ -7,7 +7,6 @@
           <el-table-column type="selection" v-if="config.checkbox" width="35"></el-table-column>
                   <el-table-column ref="MyColumns" v-for="(item, index) in config.columns"
                                    :key="index"
-                                    show-overflow-tooltip
                                    align="center"
                                    v-bind="item">
                       <template #default="{row,$index}">
@@ -15,11 +14,11 @@
                           <slot :name="item.slotName" v-if="item.types==='slot'" :row="row" :$index="$index"></slot>
                           <template v-if="item.types==='tag'">
                               <template v-for="(tagItem,index) in tagHandler(item,row)" :key="index">
-                                  <el-tag    v-bind="tagItem.bind||{}" v-on="tagItem.events||{}" style="margin-left: 5px">
-                                      {{tagItem.name}}
+                                  <el-tag    v-bind="item.options?.bind||{}" v-on="tagEventsHandler(item,row,index)" style="margin-left: 5px">
+                                      {{tagItem[item.showVal]}}
                                   </el-tag>
                               </template>
-                              <el-input  :ref="(el)=>inputArr[$index]=el"  @blur="item.newTagBlur(row)" v-focus="row.flag" v-model="row[item.newTagModel]" v-if="item.newTag&&row.flag" placeholder="请输入属性值" size="small" :input-style="{width:'40%'}"></el-input>
+                              <el-input  :ref="(el)=>inputArr[$index]=el"  @blur="item.newTagBlur(row,item)" v-focus="row.flag" v-model="row[item.newTagModel]" v-if="item.newTag&&row.flag" placeholder="请输入属性值" size="small" :input-style="{width:'40%'}"></el-input>
                               <el-button v-if="item.newTag" size="small" type="primary" :icon="Plus" style="margin: 5px" @click="toEdit(row,item.newTagModel)"></el-button>
                           </template>
                       </template>
@@ -75,12 +74,22 @@ const inputArr=ref([]);
 const tagHandler=(item,row)=>{
     let result=row.tagArr;
     if (!result){
-        result=item.callback(row);
+
+        result=item.callback(row,item);
         row.tagArr=result;
         return result;
     }
     return result;
 }
+let tagEvents=null;
+const tagEventsHandler=(item,row,index)=>{
+
+       tagEvents=item.options.events?.({item,row,index})||{}
+       return tagEvents;
+
+
+}
+
 const toEdit=(row,newTagModel)=>{
     row.flag=true;
     row[newTagModel]='';

@@ -21,13 +21,13 @@
             <el-button @click="addSaleAttr" :disabled="saleAttrIdAndValueName ? false : true" style="margin-left:10px"
                        type="primary" size="default" icon="Plus">添加属性</el-button>
             <TablePlus  :data="saleAttr" :config="tableConfig" :paginationConfig="paginationConfig" style="margin-top: 10px;">
-                <template #spuAttr="{row}">
+                <template #spuAttr="{row,$index}">
 
-                    <el-popconfirm :title="`确定要删除${row.tmName}吗?`"
+                    <el-popconfirm :title="`确定要删除${row.saleAttrName}属性吗?`"
                                    :hide-after="100"
-                                   @confirm="">
+                                   @confirm="deleteSaleAttr(row,$index)">
                         <template #reference>
-                            <el-button type="danger" :icon="Delete"></el-button>
+                            <el-button type="danger" :icon="Delete" ></el-button>
                         </template>
                     </el-popconfirm>
                 </template>
@@ -35,8 +35,8 @@
             </TablePlus>
 
             <div style="margin-top:10px">
-                <el-button type="primary">确定</el-button>
-                <el-button>取消</el-button>
+                <el-button type="primary" @click="save" :disabled="formChanged">确定</el-button>
+                <el-button @click="cancel">取消</el-button>
             </div>
         </template>
     </FormPlus>
@@ -44,15 +44,22 @@
 </template>
 
 <script setup lang="ts" name="spuForm">
-import {computed, reactive, ref, toRef, toRefs} from "vue";
+import {computed, nextTick, reactive, ref, toRef, toRefs, watch} from "vue";
 import {HasSaleAttr, SaleAttr, SpuData, SpuImg, Trademark} from "@/api/product/spu/type.ts";
-import {reqAllSaleAttr, reqAllTradeMark, reqSpuHasSaleAttr, reqSpuImageList} from "@/api/product/spu";
+import {
+    reqAddOrUpdateSpu,
+    reqAllSaleAttr,
+    reqAllTradeMark,
+    reqSpuHasSaleAttr,
+    reqSpuImageList
+} from "@/api/product/spu";
 import {FormConfig} from "@/components/el/FormPlus/src/type.ts";
 import {ElMessage} from "element-plus";
 import TablePlus from "@/components/el/TablePlus/src/TablePlus.vue";
 import {TableConfig} from "@/components/el/TablePlus/src/props/config.ts";
 import {Delete} from "@element-plus/icons-vue";
 
+const emit=defineEmits(['changeScene']);
 let spuParams = ref<SpuData>({
     category3Id: "",//收集三级分类的ID
     spuName: "",//SPU的名字
@@ -63,20 +70,18 @@ let spuParams = ref<SpuData>({
 });
 
 let saleAttr = ref<SaleAttr[]>([]);
-
 let imgList = ref<SpuImg[]>([]);
 let saleAttrIdAndValueName = ref<string>('')
 let AllTradeMark=ref<Trademark[]>([]);
 let allSaleAttr = ref<HasSaleAttr[]>([]);
 let myFormPlus=ref();
 let dialogImageUrl = ref<string>('')
-let fromData=reactive({
-    ...toRefs(spuParams.value),
-    saleAttrIdAndValueName,
-    imgList
+let fromData=reactive({});
+let initFromData =ref('');
+let formChanged=computed(()=>{
+    if (imgList.value.length<=0&&spuParams.value.id)return true;
+    return JSON.stringify(fromData)+JSON.stringify(saleAttr.value)===initFromData.value;
 })
-
-
 
 const formConfig:FormConfig<any>=reactive({
         formItems:[
@@ -135,12 +140,12 @@ const formConfig:FormConfig<any>=reactive({
             {
                 itemBind:{
                     label:'SPU销售属性'
+
                 },
                 type:'slot',
-                element:{slotName:['default'],mySlotName:['uploadSpuAttr'],elementName: 'div',style:{width:'60%'}}
+                element:{slotName:['default'],mySlotName:['uploadSpuAttr'],elementName: 'div',style:{width:'80%'}}
             },
         ],
-
     }
 )
 
@@ -158,26 +163,39 @@ const tableConfig:TableConfig<any>={
             label: '销售属性名称',
         },
         {
-          label:'销售属性值',
+            label:'销售属性值',
             types:"tag",
-            callback:(row,item)=>{
-                return row.spuSaleAttrValueList?.map((item,index)=>{
+            options:{
+                events:({row,index})=>{
                     return {
-                        name:item.saleAttrValueName,
-                        bind:{
-                            closable:true
-                        },
-                        events:{
-                            close:()=>{
-                                console.log(1)
-                            }
+                        close:()=>{
+                            console.log(index)
+                            row.tagArr.splice(index,1);
                         }
                     }
-                })
+                },
+                bind:{
+                    closable:true
+                },
+            },
+            showVal:'saleAttrValueName',
+            callback:(row,item)=>{
+              let result=row.spuSaleAttrValueList?.map((item2,index)=>{
+                  return {
+                      [item.showVal]:item2.saleAttrValueName,
+                      baseSaleAttrId:item2.baseSaleAttrId,
+                  }
+              });
+              if (result){
+                  row.spuSaleAttrValueList=result
+              }
+                return result
             },
             newTag:true,
-            newTagBlur:(row)=>{
+            newTagBlur:(row,item)=>{
               let name=row.saleAttrValue;
+                console.log(name)
+              let id=row.baseSaleAttrId
                 if (!name?.trim()){
                     ElMessage({
                         type:'warning',
@@ -185,9 +203,10 @@ const tableConfig:TableConfig<any>={
                     })
                     return;
                 }
-                let repect=row.tagArr?.some((item)=>{
-                    return item.name===name;
+                let repect=row.tagArr?.some((item1)=>{
+                    return item1.saleAttrValueName===name;
                 })
+                console.log(repect)
                 if (repect){
                     ElMessage({
                         type:'warning',
@@ -196,10 +215,10 @@ const tableConfig:TableConfig<any>={
                     return;
                 }
                 row.tagArr.push({
-                    name
+                    saleAttrValueName:name,
+                    baseSaleAttrId:id,
                 })
                 row.flag=false;
-
             },
             newTagModel:'saleAttrValue'
         },
@@ -216,11 +235,10 @@ const paginationConfig={
     hidden:true
 }
 let unSelectSaleAttr = computed(() => {
-    //全部销售属性:颜色、版本、尺码
-    //已有的销售属性:颜色、版本
+
     let unSelectArr = allSaleAttr.value.filter(item => {
         return saleAttr.value.every(item1 => {
-            return item.name != item1.saleAttrName;
+            return item.name  != item1.saleAttrName;
         });
     })
     return unSelectArr;
@@ -228,7 +246,6 @@ let unSelectSaleAttr = computed(() => {
 let dialogVisible=ref(false)
 const handlePictureCardPreview = (file: any) => {
     dialogImageUrl.value = file.url;
-    //对话框弹出来
     dialogVisible.value = true;
 }
 const handlerUpload = (file: any) => {
@@ -250,7 +267,9 @@ const handlerUpload = (file: any) => {
         return false;
     }
 }
-const initSpuParams=async ()=>{
+const initSpuParams=async (c3Id)=>{
+    myFormPlus.value.myFrom.clearValidate();
+
     Object.assign(spuParams.value, {
         category3Id: "",//收集三级分类的ID
         spuName: "",//SPU的名字
@@ -259,10 +278,20 @@ const initSpuParams=async ()=>{
         spuImageList: [],
         spuSaleAttrList: [],
     });
+    delete spuParams.value.id
+    Object.assign(fromData,{
+        ...toRefs(spuParams.value),
+        saleAttrIdAndValueName,
+        imgList
+    })
    let result=await reqAllTradeMark();
     let result1=await reqAllSaleAttr();
+    imgList.value = [];
+    saleAttr.value = [];
+    saleAttrIdAndValueName.value  = '';
     AllTradeMark.value=result.data;
     allSaleAttr.value=result1.data;
+    spuParams.value.category3Id=c3Id;
 }
 const addSaleAttr = () => {
     const [baseSaleAttrId, saleAttrName] = saleAttrIdAndValueName.value.split(':');
@@ -271,13 +300,60 @@ const addSaleAttr = () => {
         saleAttrName,
         spuSaleAttrValueList: []
     }
-    //追加到数组当中
     saleAttr.value.push(newSaleAttr);
-    //清空收集的数据
     saleAttrIdAndValueName.value = '';
-
 }
-defineExpose({initSpuParams});
+const cancel= () => {
+    emit('changeScene',{flag:0,param:'update'})
+}
+
+const save=async () => {
+        await myFormPlus.value.myFrom.validate();
+    let cloneSaleAttr=JSON.parse(JSON.stringify(saleAttr.value));
+    spuParams.value.spuSaleAttrList=cloneSaleAttr.map(item=>{
+            delete item.tagArr;
+            return item
+    });
+    spuParams.value.spuImageList=imgList.value.map(item=>({imgName:item.name,imgUrl:item.url}))
+    let result=await reqAddOrUpdateSpu(spuParams.value);
+    if(result.code==200){
+        emit('changeScene',{flag:0,param:'add'});
+        ElMessage({
+            type:'success',
+            message:`成功${spuParams.value.id?'修改':'添加'}`
+        })
+        imgList.value=[];
+    }
+}
+
+
+const initHasSpuData = async (spu: SpuData) => {
+    myFormPlus.value.myFrom.clearValidate();
+    spuParams.value = spu;
+    let result = await reqAllTradeMark();
+    let result1 = await reqSpuImageList((spu.id as number));
+    let result2= await reqSpuHasSaleAttr((spu.id as number));
+    let result3= await reqAllSaleAttr();
+    AllTradeMark.value = result.data;
+    imgList.value = result1.data.map(item => {
+        return {
+            name: item.imgName,
+            url: item.imgUrl
+        }
+    })
+    Object.assign(fromData,toRefs(spuParams.value),{imgList,saleAttrIdAndValueName});
+
+    saleAttr.value = result2.data;
+    allSaleAttr.value = result3.data;
+    nextTick(()=>{
+        initFromData.value=JSON.stringify(fromData)+JSON.stringify(saleAttr.value);
+    })
+}
+
+const deleteSaleAttr=(row,index)=>{
+    saleAttr.value.splice(index,1);
+}
+defineExpose({initSpuParams,initHasSpuData});
 </script>
 
 
@@ -285,5 +361,3 @@ defineExpose({initSpuParams});
 
 
 </style>
-<script setup>
-</script>

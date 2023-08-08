@@ -5,7 +5,10 @@
                            v-bind="formItem.itemBind"
                            ref="elFormItems"
                            :key="index">
-                    <Component v-if="formItem.type==='slot'" :is="formItem.element?.elementName" v-bind="formItem.element" v-model="formData[formItem.element?.vModel]">
+                    <Component v-if="formItem.type==='slot'"
+                               :is="formItem.element?.elementName"
+                               v-bind="formItem.element"
+                               v-model="formData[formItem.element?.vModel]">
                                 <p v-if="formItem.element?.label">{{formItem.element?.label}}</p>
                                 <template v-for="(item,index) in formItem.element?.slotName" #[item]="scope">
                                     <slot :name="formItem.element?.mySlotName?.[index]" v-bind="scope||{}"></slot>

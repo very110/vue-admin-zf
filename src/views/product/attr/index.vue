@@ -88,14 +88,17 @@ const tableConfig: TableConfig<Attr> = reactive({
         {
             label: '属性值名称',
             types: "tag",
+            showVal:'valueName',
+            options: {
+                bind: {
+                    round: true,
+                }
+            },
             callback: (row) => {
                 let arr = row.attrValueList;
                 let result = arr?.map((item, index) => {
                     return {
-                        bind: {
-                            round: true,
-                        },
-                        name: item.valueName
+                        valueName: item.valueName
                     }
                 })
                 return result
