@@ -4,7 +4,7 @@
             <el-button type="primary" @click="addTrademark">添加品牌</el-button>
             <TablePlus :data="tableData" :config="tableConfig" :paginationConfig="paginationConfig"
                        border style="margin:20px 0"
-                       :row-style="{'height':'100px'}"
+
                        @ChangeGetData="getHasTrademark"
             >
                 <template #logo="{row}">

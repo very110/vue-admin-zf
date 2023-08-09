@@ -1,10 +1,10 @@
 import {defineStore} from "pinia"
-import { reqLogin, reqUserInfo, reqLogout } from '@/api/user'
+import { reqLogin, reqUserInfo, reqLogout } from '@/api/user/index.ts'
 import type {
     loginFormData,
     loginResponseData,
     userInfoReponseData,
-} from '@/api/user/type';
+} from '@/api/user/type.ts';
 import {SET_TOKEN,GET_TOKEN,REMOVE_TOKEN} from "@/utils/token.ts";
 import {asyncRoute,constRoutes,anyRoute} from "@/router/routes.ts"
 import router from "@/router/index.ts";
@@ -12,6 +12,7 @@ import {cloneDeep} from "lodash";
 
 const filterRouter=(route:any,asyncRoute:any)=>{
 
+    // @ts-ignore
     return asyncRoute.filter(item=>{
         if (route.includes(item.name)){
             if (item.children){
@@ -46,7 +47,6 @@ export const useUserStore = defineStore('User', {
         },
         async userInfo(){
            let result=await reqUserInfo();
-            console.log(result);
            if (result.code===200){
                this.avatar=result.data.avatar;
                this.username=result.data.name;

@@ -5,7 +5,8 @@ interface Themes {
         bgColor: string;
         textColor: string;
         loginBg: string;
-        menuAndTabbarBG:string
+        menuAndTabbarBG:string;
+        borderColor:string
     };
 }
 
@@ -15,12 +16,14 @@ const themes: Themes = {
         textColor: '#cddbf1',
         loginBg: '#242c51',
         menuAndTabbarBG:'#242c51',
+        borderColor:'#415094'
     },
     light: {
         bgColor: '#ecf0f3',
         textColor: '#000',
         loginBg: '#ecf0f3',
         menuAndTabbarBG:'#f5f9fa',
+        borderColor:'#ebeef5'
     }
 }
 
@@ -59,4 +62,4 @@ export const getTheme=():'dark'|'light'=>{
     return localStorage.getItem('theme') as 'dark'|'light'||'dark';
 }
 
-export default {themeColor:toRef(themeColors,'curThemeColor'), htmlProxy};
+// export default {themeColor:toRef(themeColors,'curThemeColor'), htmlProxy};

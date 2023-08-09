@@ -24,8 +24,9 @@ $Themes: (
                 textColor:#000,
                 loginBg:#ecf0f3,
                 menuAndTabbarBG:#f5f9fa,
-                hoverMenuItem:linear-gradient(to right, #42b0ff, #65bfff,transparent)
-
+                hoverMenuItem:linear-gradient(to right, #42b0ff, #65bfff,transparent),
+                mainBg:#f1f5f8,
+                borderColor:#ebeef5
         ),
 
 
@@ -34,7 +35,9 @@ $Themes: (
                 textColor:#cddbf1,
                 loginBg:#242c51,
                 menuAndTabbarBG:#242c51,
-                hoverMenuItem:linear-gradient(to right, #3d8bf3,#356cbf,transparent)
+                hoverMenuItem:linear-gradient(to right, #3d8bf3,#356cbf,transparent),
+                mainBg:#191a2c,
+                borderColor:#415094
 
         )
 

@@ -1,5 +1,5 @@
 <template>
-    <el-form :inline="true">
+    <el-form :inline="true" >
         <el-form-item label="一级分类">
             <el-select v-model="categoryStore.c1Id" :disabled="scene!=0" class="m-2" placeholder="请选择" @change="handler1">
                 <el-option

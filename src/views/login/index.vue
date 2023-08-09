@@ -147,7 +147,7 @@
                             <template #content>
                                 <div class="text"><el-icon :color="themeColor.textColor" size="20">
                                     <Sunny v-if="effect==='light'"/><Moon v-else/></el-icon>
-                                    <span>萌新点击此处可切换主题模式</span>
+                                    <span>萌新点击此处球体中心也可切换主题模式</span>
                                     <el-button type="primary" size="small" round @click="closeTooltip">知道了</el-button>
                                 </div>
 
@@ -455,11 +455,6 @@ const switchTheme=(theme:string)=>{
   }
 }
 
-@media (max-width: 450px) {
-  .shell {
-    transform: scale(0.3);
-  }
-}
 
 
 .shell {

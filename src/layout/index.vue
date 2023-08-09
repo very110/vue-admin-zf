@@ -115,6 +115,9 @@ const UserStore=useUserStore();
   .main {
       position: relative;
         padding: 20px;
+     @include themeColors{
+         background-color: getThemeValues(mainBg);
+     }
   }
 }
 .layout-container.closeMenu{
