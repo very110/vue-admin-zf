@@ -37,7 +37,7 @@
           <div class="exitLogin">
               <el-dropdown  :show-timeout="100">
                   <div class="avatar">
-                      <img :src="userStore.avatar">
+                      <img src="https://tse1-mm.cn.bing.net/th/id/OIP-C.RR6081d7yzmAye6o8mNUggAAAA?w=200&h=201&c=7&r=0&o=5&dpr=1.3&pid=1.7">
                       <span>{{userStore.username}}</span><el-icon class="el-icon--right" size="16" :color="themeColor.textColor"><arrow-down /></el-icon>
                   </div>
 
@@ -216,8 +216,8 @@
                 img{
                   border-radius:50%;
                     /* px-to-viewport-ignore-next */
-                    width: 30px;
-                    height: 30px;
+                    width: 40px;
+                    height: 40px;
                     object-fit: cover;
                     object-position: center center;
                 }

@@ -19,7 +19,7 @@
                        :background-color="themeColor.menuAndTabbarBG"
                        :text-color="themeColor.textColor"
                    >
-                       <Menu :menuList="constRoutes"></Menu>
+                       <Menu :menuList="UserStore.menuRoutes"></Menu>
 
                    </el-menu>
                </div>
@@ -39,13 +39,14 @@
   import Menu from './menu/index.vue';
   import useLayOutSettingStore from "@/store/module/setting.ts";
   import {themeColor} from "@/utils/themes.ts";
-  import {constRoutes} from "@/router/routes.ts"
+
   import {useRoute} from "vue-router";
+  import {useUserStore} from "@/store/module/user.ts";
     let LayOutSettingStore=useLayOutSettingStore();
   const menuHandleOpen=()=>{}
   const menuHandleClose=()=>{}
   let $router =useRoute();
-
+const UserStore=useUserStore();
 </script>
 
 

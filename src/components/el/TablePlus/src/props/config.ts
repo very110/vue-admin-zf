@@ -12,6 +12,8 @@ export interface TableColumns<U extends Object>{
 }
 
 export interface TableConfig<T extends Object> {
-        columns:TableColumns<T>[]
+        columns:TableColumns<T>[],
+    [key: string]: any
+
 }
 

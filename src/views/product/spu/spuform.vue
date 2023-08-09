@@ -96,7 +96,6 @@ const formConfig:FormConfig<any>=reactive({
                     'input-style':{width:'60%'},
                     vModel:'spuName',
                     placeholder:'请输入Spu名称',
-
                 },
                 type:'slot'
             },
@@ -194,7 +193,6 @@ const tableConfig:TableConfig<any>={
             newTag:true,
             newTagBlur:(row,item)=>{
               let name=row.saleAttrValue;
-                console.log(name)
               let id=row.baseSaleAttrId
                 if (!name?.trim()){
                     ElMessage({
@@ -206,7 +204,6 @@ const tableConfig:TableConfig<any>={
                 let repect=row.tagArr?.some((item1)=>{
                     return item1.saleAttrValueName===name;
                 })
-                console.log(repect)
                 if (repect){
                     ElMessage({
                         type:'warning',
@@ -218,7 +215,8 @@ const tableConfig:TableConfig<any>={
                     saleAttrValueName:name,
                     baseSaleAttrId:id,
                 })
-                row.flag=false;
+                delete row.flag;
+               Reflect.deleteProperty(row,item.newTagModel);
             },
             newTagModel:'saleAttrValue'
         },
@@ -304,6 +302,7 @@ const addSaleAttr = () => {
     saleAttrIdAndValueName.value = '';
 }
 const cancel= () => {
+
     emit('changeScene',{flag:0,param:'update'})
 }
 

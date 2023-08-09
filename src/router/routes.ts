@@ -32,6 +32,16 @@ export const constRoutes: Array<RouteRecordRaw> = [
         ]
     },
     {
+        path: '/404',
+        meta:{
+            hidden: true
+        },
+        component: () => import('@/views/404/index.vue')
+    }
+]
+
+export const asyncRoute=[
+    {
         path: '/product',
         component: () => import('@/layout/index.vue'),
         name: 'Product',
@@ -79,21 +89,16 @@ export const constRoutes: Array<RouteRecordRaw> = [
             },
         ],
     },
+];
+
+export const anyRoute = [
     {
-        path: '/404',
+    path: '/:pathMatch(.*)?',
         meta:{
             hidden: true
         },
-        component: () => import('@/views/404/index.vue')
-    }
-
-]
-
-const anyRoute = [
-    {
-    path: '/:pathMatch(.*)?',
     component: () => import('@/views/404/index.vue')
-}
+    }
 ]
 
 

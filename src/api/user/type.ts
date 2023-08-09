@@ -16,7 +16,7 @@ export interface loginResponseData extends ResponseData {
 export interface userInfoReponseData extends ResponseData {
     data: {
         routes: string[]
-        buttons: string[]
+        buttons: string[]|any
         roles: string[]
         name: string
         avatar: string

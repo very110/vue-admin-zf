@@ -10,7 +10,7 @@
                       @ChangeGetData="getHasSpu"
                       style="margin-top:20px">
                <template #myButton="{row}">
-                   <el-button :icon="Plus" type="primary" size="small"  title="添加sku"></el-button>
+                   <el-button :icon="Plus" type="primary" size="small"  title="添加sku" @click="addSku(row)"></el-button>
                    <el-button :icon="Edit" type="primary" size="small"  @click="updateSpu(row)" title="修改spu"></el-button>
                    <el-button :icon="Search" type="primary" size="small"  @click="findSku(row)" title="查看spu"></el-button>
                    <el-popconfirm :title="`你确定删除${row.spuName}?`" width="200px"
@@ -29,7 +29,7 @@
                    <el-table-column prop="price" label="sku价格" width="50"></el-table-column>
                    <el-table-column  label="sku图片" width="150">
                        <template #default="{row}">
-                           <img :src="row.skuDefaultImg" style="object-fit: cover">
+                           <img :src="row.skuDefaultImg" style="object-fit: cover;max-width:100px;">
                        </template>
                    </el-table-column>
                </el-table>
@@ -37,6 +37,7 @@
        </div>
 
        <spuForm ref="mySpuForm" v-show="scene===1" @changeScene="changeScene"></spuForm>
+       <skuForm ref="mySkuForm" v-show="scene===2" @changeScene="changeScene" ></skuForm>
    </el-card>
 </div>
 </template>
@@ -52,6 +53,7 @@ import spuForm from './spuform.vue'
 import {SkuData} from "@/api/product/spu/type.ts";
 import Spuform from "@/views/product/spu/spuform.vue";
 import {ElMessage} from "element-plus";
+import skuForm from "@/views/product/spu/skuform.vue"
   let scene =ref(0);
   let categoryStore=useCategoryStore();
   const spuTableData = ref([]);
@@ -109,6 +111,7 @@ const getHasSpu=async (page=1)=>{
 const addSpu=()=>{
     scene.value=1;
   mySpuForm.value.initSpuParams(categoryStore.c3Id);
+
 }
 const updateSpu=(row)=>{
     scene.value=1;
@@ -146,10 +149,17 @@ const findSku=async (row)=>{
 }
 
 const mySpuForm=ref(null);
+const mySkuForm=ref(null);
+const addSku=(row)=>{
+    scene.value=2;
 
-  onBeforeUnmount(()=>{
+    mySkuForm.value.initData(categoryStore.c1Id,categoryStore.c2Id,row);
+}
+onBeforeUnmount(()=>{
       categoryStore.$reset();
   })
+
+
 </script>
 
 

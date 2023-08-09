@@ -6,6 +6,22 @@ import type {
     userInfoReponseData,
 } from '@/api/user/type';
 import {SET_TOKEN,GET_TOKEN,REMOVE_TOKEN} from "@/utils/token.ts";
+import {asyncRoute,constRoutes,anyRoute} from "@/router/routes.ts"
+import router from "@/router/index.ts";
+import {cloneDeep} from "lodash";
+
+const filterRouter=(route:any,asyncRoute:any)=>{
+
+    return asyncRoute.filter(item=>{
+        if (route.includes(item.name)){
+            if (item.children){
+                item.children=filterRouter(route,item.children)
+            }
+            return true;
+        }
+        return false;
+    })
+}
 
 export const useUserStore = defineStore('User', {
     state: () => {
@@ -13,6 +29,8 @@ export const useUserStore = defineStore('User', {
             token:GET_TOKEN(),
             username: '',
             avatar: '',
+            buttons:[],
+            menuRoutes:constRoutes
         }
     },
     actions: {
@@ -28,9 +46,17 @@ export const useUserStore = defineStore('User', {
         },
         async userInfo(){
            let result=await reqUserInfo();
+            console.log(result);
            if (result.code===200){
                this.avatar=result.data.avatar;
-               this.username=result.data.name;//先暂时这样,权限按钮和路由后面再做
+               this.username=result.data.name;
+               this.buttons=result.data.buttons;
+               const permissionsRoute=filterRouter(result.data.routes,cloneDeep(asyncRoute));
+
+               this.menuRoutes=[...constRoutes,...permissionsRoute,...anyRoute];
+               this.menuRoutes.forEach((item)=>{
+                    router.addRoute(item);
+               })
                return 'ok'
            }
            return Promise.reject(new Error(result.message))
