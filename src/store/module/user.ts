@@ -12,6 +12,7 @@ import {cloneDeep} from "lodash";
 
 const filterRouter=(route:any,asyncRoute:any)=>{
 
+    // @ts-ignore
     return asyncRoute.filter(item=>{
         if (route.includes(item.name)){
             if (item.children){
