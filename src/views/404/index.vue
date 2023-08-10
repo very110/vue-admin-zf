@@ -84,7 +84,9 @@ import {useRoute, useRouter} from "vue-router";
         .pc-camera{
           position: absolute;
           width: 14px;
-          height: 14px;
+          height: 1vw;
+            min-width:8px;
+            min-height:8px;
           left: 50%;
           top: 5px;
           transform:translateX(-50%) ;
@@ -321,7 +323,7 @@ import {useRoute, useRouter} from "vue-router";
       }
         .bb{
             width: 50%;
-            height: 50%;
+            height: 55%;
             background-color:#fafdff;
             box-shadow: 0 0 2px #000000;
             padding: 7px;

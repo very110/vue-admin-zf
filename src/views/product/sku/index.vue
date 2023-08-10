@@ -1,32 +1,35 @@
 <template>
     <el-card>
-        <el-table border style="margin: 10px 0px;" :data="skuArr">
-            <el-table-column label="序号" type="index" align="center" width="80px"></el-table-column>
-            <el-table-column label="名称" show-overflow-tooltip width="150px" prop="skuName"></el-table-column>
-            <el-table-column label="描述" show-overflow-tooltip width="150px" prop="skuDesc"></el-table-column>
-            <el-table-column label="图片" width="150px">
+        <el-table border style="margin: 10px 0px;" :data="skuArr"  :cell-style="{backgroundColor:themeColor.menuAndTabbarBG,'color':themeColor.textColor,'border-right-color':themeColor.borderColor,'border-bottom-color':themeColor.borderColor}"
+                  :header-cell-style="{backgroundColor:themeColor.menuAndTabbarBG,'color':themeColor.textColor,'border-right-color':themeColor.borderColor,'border-bottom-color':themeColor.borderColor}">
+
+            <el-table-column  label="序号" type="index" align="center" width="80px"></el-table-column>
+            <el-table-column align="center" label="名称" show-overflow-tooltip  prop="skuName"></el-table-column>
+            <el-table-column align="center" label="描述" show-overflow-tooltip  prop="skuDesc"></el-table-column>
+            <el-table-column align="center" label="图片">
                 <template #="{ row, $index }">
                     <img :src="row.skuDefaultImg" alt="" style="width: 100px;height: 100px;">
                 </template>
             </el-table-column>
-            <el-table-column label="重量" width="150px" prop="weight"></el-table-column>
-            <el-table-column label="价格" width="150px" prop="price"></el-table-column>
-            <el-table-column label="操作" width="250px" fixed="right">
+            <el-table-column align="center" label="重量" width="150px" prop="weight"></el-table-column>
+            <el-table-column align="center" label="价格" width="150px" prop="price"></el-table-column>
+            <el-table-column align="center" label="操作"  fixed="right">
                 <template #="{ row, $index }">
-                    <el-button type="primary" size="small" :icon="row.isSale == 1 ? 'Bottom' : 'Top'"
-                        @click="updateSale(row)"></el-button>
-                    <el-button type="primary" size="small" icon="InfoFilled" @click="findSku(row)"></el-button>
+                    <el-button type="primary" size="small" v-has="`btn.Sku.updown` " :icon="row.isSale == 1 ? 'Bottom' : 'Top'"
+                               @click="updateSale(row)"></el-button>
+                    <el-button type="primary" v-has="`btn.Sku.update`" size="small" icon="Edit" @click="updateSku"></el-button>
+                    <el-button type="primary" v-has="`btn.Sku.detail`" size="small" icon="InfoFilled" @click="findSku(row)"></el-button>
                     <el-popconfirm :title="`你确定要删除${row.skuName}?`" width="200px" @confirm="removeSku(row.id)">
                         <template #reference>
-                            <el-button type="primary" size="small" icon="Delete"></el-button>
+                            <el-button type="primary" size="small" v-has="`btn.Sku.remove`" icon="Delete"></el-button>
                         </template>
                     </el-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
-        <el-pagination v-model:current-page="pageNo" v-model:page-size="pageSize" :page-sizes="[10, 20, 30, 40]"
-            :background="true" layout="prev, pager, next, jumper,->,sizes,total" :total="total" @current-change="getHasSku"
-            @size-change="handler" />
+        <el-pagination v-model:current-page="pageNo" v-model:page-size="pageSize" :page-sizes="[7, 14, 21, 30]"
+                       :background="true" layout="prev, pager, next, jumper,->,sizes,total" :total="total" @current-change="getHasSku"
+                       @size-change="handler" />
         <!-- 抽屉组件:展示商品详情 -->
         <el-drawer v-model="drawer">
             <!-- 标题部分 -->
@@ -50,14 +53,14 @@
                     <el-col :span="6">平台属性</el-col>
                     <el-col :span="18">
                         <el-tag style="margin:5px;" v-for="item in skuInfo.skuAttrValueList" :key="item.id">{{
-                            item.valueName }}</el-tag>
+                                item.valueName }}</el-tag>
                     </el-col>
                 </el-row>
                 <el-row style="margin:10px 0px;">
                     <el-col :span="6">销售属性</el-col>
                     <el-col :span="18">
                         <el-tag style="margin:5px;" v-for="item in skuInfo.skuSaleAttrValueList" :key="item.id">{{
-                            item.saleAttrValueName }}</el-tag>
+                                item.saleAttrValueName }}</el-tag>
                     </el-col>
                 </el-row>
                 <el-row style="margin:10px 0px;">
@@ -77,26 +80,27 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-
+//引入请求
 import { reqSkuList, reqSaleSku, reqCancelSale, reqSkuInfo, reqRemoveSku } from '@/api/product/sku'
-
+//引入ts类型
 import type { SkuResponseData, SkuData, SkuInfoData } from '@/api/product/sku/type';
 import { ElMessage } from 'element-plus';
-
+import {themeColor} from "@/utils/themes.ts";
+//分页器当前页码
 let pageNo = ref<number>(1);
-
-let pageSize = ref<number>(10);
+//每一页展示几条数据
+let pageSize = ref<number>(7);
 let total = ref<number>(0);
 let skuArr = ref<SkuData[]>([]);
-
+//控制抽屉显示与隐藏的字段
 let drawer = ref<boolean>(false);
 let skuInfo = ref<any>({});
-
+//组件挂载完毕
 onMounted(() => {
     getHasSku();
 });
 const getHasSku = async (pager = 1) => {
-
+    //当前分页器的页码
     pageNo.value = pager;
     let result: SkuResponseData = await reqSkuList(pageNo.value, pageSize.value);
     if (result.code == 200) {
@@ -104,14 +108,15 @@ const getHasSku = async (pager = 1) => {
         skuArr.value = result.data.records;
     }
 }
-
+//分页器下拉菜单发生变化触发
 const handler = (pageSizes: number) => {
     getHasSku();
 }
 
-
+//商品的上架与下架的操作
 const updateSale = async (row: SkuData) => {
-
+    //如果当前商品的isSale==1,说明当前商品是上架的额状态->更新为下架
+    //否则else情况与上面情况相反
     if (row.isSale == 1) {
         //下架操作
         await reqCancelSale((row.id as number));
@@ -129,30 +134,30 @@ const updateSale = async (row: SkuData) => {
         getHasSku(pageNo.value);
     }
 }
-
+//更新已有的SKU
 const updateSku = () => {
     ElMessage({ type: 'success', message: '程序员在努力的更新中....' })
 }
-
+//查看商品详情按钮的回调
 const findSku = async (row: SkuData) => {
     //抽屉展示出来
     drawer.value = true;
-
+    //获取已有商品详情数据
     let result: SkuInfoData = await reqSkuInfo((row.id as number));
-
+    //存储已有的SKU
     skuInfo.value = result.data;
 }
-
+//删除某一个已有的商品
 const removeSku = async (id: number) => {
-
+    //删除某一个已有商品的情况
     let result: any = await reqRemoveSku(id);
     if (result.code == 200) {
-
+        //提示信息
         ElMessage({ type: 'success', message: '删除成功' });
-
+        //获取已有全部商品
         getHasSku(skuArr.value.length > 1 ? pageNo.value : pageNo.value - 1);
     } else {
-
+        //删除失败
         ElMessage({ type: 'error', message: '系统数据不能删除' });
     }
 }

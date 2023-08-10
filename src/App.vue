@@ -81,10 +81,33 @@ window.addEventListener('offline',offlineTasks)
 
 
 </style>
-<style>
+<style lang="scss">
+@import "@/styles/variable";
 ::-webkit-scrollbar {
     width: 2px;
 }
 
 
+.el-card__body{
+    @include themeColors{
+        background-color: getThemeValues(menuAndTabbarBG);
+    }
+
+}
+.el-card{
+    @include customTheme(light){
+        border: 1px solid var(--el-card-border-color);
+    }
+    @include customTheme(dark){
+        border: 1px solid #242c51;
+        box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.12);
+        background-color: initial;
+    }
+}
+
+.el-form .el-form-item__label{
+    @include themeColors{
+        color: getThemeValues(textColor);
+    }
+}
 </style>

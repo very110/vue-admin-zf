@@ -1,10 +1,10 @@
 <template>
     <div>
         <el-card style="width: 100%;height: 100%;">
-            <el-button type="primary" @click="addTrademark">添加品牌</el-button>
-            <TablePlus :data="tableData" :config="tableConfig" :paginationConfig="paginationConfig"
+            <el-button type="primary" @click="addTrademark" v-has="`btn.Trademark.add`">添加品牌</el-button>
+            <TablePlus  :data="tableData" :config="tableConfig" :paginationConfig="paginationConfig"
                        border style="margin:20px 0"
-                       :row-style="{'height':'100px'}"
+
                        @ChangeGetData="getHasTrademark"
             >
                 <template #logo="{row}">
@@ -13,12 +13,12 @@
 
                 <template #crud="{row}">
 
-                    <el-button type="primary" :icon="Edit" @click="updateTrademark(row)"></el-button>
-                    <el-popconfirm :title="`确定要删除${row.tmName}吗?`"
+                    <el-button v-has="`btn.Trademark.update`" type="primary" :icon="Edit" @click="updateTrademark(row)"></el-button>
+                    <el-popconfirm  :title="`确定要删除${row.tmName}吗?`"
                                    :hide-after="100"
                                    @confirm="deleteTrademark(row.id)">
                         <template #reference>
-                            <el-button type="danger" :icon="Delete"></el-button>
+                            <el-button  v-has="`btn.Trademark.remove`" type="danger" :icon="Delete"></el-button>
                         </template>
                     </el-popconfirm>
                 </template>

@@ -1,6 +1,6 @@
 
 // @ts-ignore
-import request from '@/utils/request'
+import request from '@/utils/request.ts'
 
 import type {
 
@@ -10,7 +10,7 @@ import type {
 
     userInfoReponseData,
 
-} from './type'
+} from './type.ts'
 
 //项目用户相关的请求地址
 

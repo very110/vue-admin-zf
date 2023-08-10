@@ -79,7 +79,7 @@ let dialogImageUrl = ref<string>('')
 let fromData=reactive({});
 let initFromData =ref('');
 let formChanged=computed(()=>{
-    if (imgList.value.length<=0&&spuParams.value.id)return true;
+
     return JSON.stringify(fromData)+JSON.stringify(saleAttr.value)===initFromData.value;
 })
 
@@ -279,7 +279,7 @@ const initSpuParams=async (c3Id)=>{
     delete spuParams.value.id
     Object.assign(fromData,{
         ...toRefs(spuParams.value),
-        saleAttrIdAndValueName,
+
         imgList
     })
    let result=await reqAllTradeMark();
@@ -340,7 +340,7 @@ const initHasSpuData = async (spu: SpuData) => {
             url: item.imgUrl
         }
     })
-    Object.assign(fromData,toRefs(spuParams.value),{imgList,saleAttrIdAndValueName});
+    Object.assign(fromData,toRefs(spuParams.value),{imgList});
 
     saleAttr.value = result2.data;
     allSaleAttr.value = result3.data;

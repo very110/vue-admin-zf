@@ -5,15 +5,15 @@
         </el-card>
         <el-card style="margin-top:20px">
             <div v-show="scene===0">
-                <el-button type="primary" :disabled="!categoryStore.c3Id" @click="addAttr">添加属性</el-button>
+                <el-button v-has="`btn.Attr.add`" type="primary" :disabled="!categoryStore.c3Id" @click="addAttr">添加属性</el-button>
                 <TablePlus :data="tableData" :config="tableConfig" :paginationConfig="paginationConfig"
                            style="margin-top:20px">
                     <template #myButton="{row}">
-                        <el-button :icon="Edit" type="primary" size="small" @click="updateAttr(row)"></el-button>
+                        <el-button v-has="`btn.Attr.update`" :icon="Edit" type="primary" size="small" @click="updateAttr(row)"></el-button>
                         <el-popconfirm :title="`你确定删除${row.attrName}?`" width="200px"
                                        @confirm="deleteAttr(row.id)">
                             <template #reference>
-                                <el-button type="primary" size="small" icon="Delete"></el-button>
+                                <el-button v-has="`btn.Attr.remove`" type="primary" size="small" icon="Delete"></el-button>
                             </template>
                         </el-popconfirm>
                     </template>
