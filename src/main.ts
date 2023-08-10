@@ -20,7 +20,9 @@ app.use(gloablComponent);
 app.use(router);
 import {directiveResize} from "@/directive/resize.ts";
 import {directiveFocus} from "@/directive/focus.ts";
+import {isHasButton} from "@/directive/has.ts";
 directiveResize(app);
 directiveFocus(app);
+isHasButton(app);
 app.mount("#app");
 

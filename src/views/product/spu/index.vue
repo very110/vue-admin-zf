@@ -5,18 +5,18 @@
     </el-card>
    <el-card style="margin-top:20px">
        <div v-show="scene===0">
-           <el-button type="primary" @click="addSpu" :disabled="!categoryStore.c3Id">添加spu</el-button>
+           <el-button type="primary" @click="addSpu" :disabled="!categoryStore.c3Id" v-has="`btn.Spu.add`">添加spu</el-button>
            <TablePlus :data="spuTableData" :config="tableConfig" :paginationConfig="paginationConfig"
                       @ChangeGetData="getHasSpu"
                       style="margin-top:20px">
                <template #myButton="{row}">
-                   <el-button :icon="Plus" type="primary" size="small"  title="添加sku" @click="addSku(row)"></el-button>
-                   <el-button :icon="Edit" type="primary" size="small"  @click="updateSpu(row)" title="修改spu"></el-button>
-                   <el-button :icon="Search" type="primary" size="small"  @click="findSku(row)" title="查看spu"></el-button>
+                   <el-button :icon="Plus" type="primary" size="small"  title="添加sku" v-has="`btn.Spu.addsku`" @click="addSku(row)"></el-button>
+                   <el-button :icon="Edit" type="primary" size="small" v-has="`btn.Spu.update`" @click="updateSpu(row)" title="修改spu"></el-button>
+                   <el-button :icon="Search" type="primary" size="small" v-has="`btn.Spu.skus`"  @click="findSku(row)" title="查看spu"></el-button>
                    <el-popconfirm :title="`你确定删除${row.spuName}?`" width="200px"
                                   @confirm="deleteAttr(row.id)">
                        <template #reference>
-                           <el-button type="primary" size="small" icon="Delete" title="删除spu"></el-button>
+                           <el-button v-has="`btn.Spu.delete`" type="primary" size="small" icon="Delete" title="删除spu"></el-button>
                        </template>
                    </el-popconfirm>
                </template>
