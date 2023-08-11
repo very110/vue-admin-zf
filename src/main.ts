@@ -10,7 +10,11 @@ import "virtual:svg-icons-register";
 import router from "@/router";
 import store from "@/store/index.ts"
 import '@/router/permisstion.ts'
+import {uuid} from "vue-uuid";
 const app = createApp(App);
+
+app.config.globalProperties.$v1=uuid.v1;
+
 app.use(store)
 app.use(ElementPlus, {
   locale: zhCn,
@@ -18,6 +22,7 @@ app.use(ElementPlus, {
 import gloablComponent from './components/index';
 app.use(gloablComponent);
 app.use(router);
+
 import {directiveResize} from "@/directive/resize.ts";
 import {directiveFocus} from "@/directive/focus.ts";
 import {isHasButton} from "@/directive/has.ts";

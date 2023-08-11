@@ -19,8 +19,10 @@
     "jsonp": "^0.2.1",
     "lodash": "^4.17.21",
     "pinia": "^2.1.4",
+    "uuid": "^9.0.0",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.4"
+    "vue-router": "^4.2.4",
+    "vue-uuid": "^3.0.0"
   },
   "devDependencies": {
     "@types/jsonp": "^0.2.1",
@@ -30,6 +32,7 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "eslint": "^8.45.0",
     "eslint-plugin-vue": "^9.15.1",
+    "http-proxy-middleware": "^2.0.6",
     "mockjs": "^1.1.0",
     "postcss-preset-env": "^9.0.0",
     "postcss-px-to-viewport-8-plugin": "^1.2.2",

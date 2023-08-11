@@ -17,7 +17,7 @@
                 <template #="{ row, $index }">
                     <el-button type="primary" size="small" v-has="`btn.Sku.updown` " :icon="row.isSale == 1 ? 'Bottom' : 'Top'"
                                @click="updateSale(row)"></el-button>
-                    <el-button type="primary" v-has="`btn.Sku.update`" size="small" icon="Edit" @click="updateSku"></el-button>
+
                     <el-button type="primary" v-has="`btn.Sku.detail`" size="small" icon="InfoFilled" @click="findSku(row)"></el-button>
                     <el-popconfirm :title="`你确定要删除${row.skuName}?`" width="200px" @confirm="removeSku(row.id)">
                         <template #reference>
@@ -86,13 +86,10 @@ import { reqSkuList, reqSaleSku, reqCancelSale, reqSkuInfo, reqRemoveSku } from 
 import type { SkuResponseData, SkuData, SkuInfoData } from '@/api/product/sku/type';
 import { ElMessage } from 'element-plus';
 import {themeColor} from "@/utils/themes.ts";
-//分页器当前页码
 let pageNo = ref<number>(1);
-//每一页展示几条数据
 let pageSize = ref<number>(7);
 let total = ref<number>(0);
 let skuArr = ref<SkuData[]>([]);
-//控制抽屉显示与隐藏的字段
 let drawer = ref<boolean>(false);
 let skuInfo = ref<any>({});
 //组件挂载完毕
@@ -108,56 +105,36 @@ const getHasSku = async (pager = 1) => {
         skuArr.value = result.data.records;
     }
 }
-//分页器下拉菜单发生变化触发
 const handler = (pageSizes: number) => {
     getHasSku();
 }
 
-//商品的上架与下架的操作
 const updateSale = async (row: SkuData) => {
-    //如果当前商品的isSale==1,说明当前商品是上架的额状态->更新为下架
-    //否则else情况与上面情况相反
     if (row.isSale == 1) {
-        //下架操作
         await reqCancelSale((row.id as number));
-        //提示信息
         ElMessage({ type: 'success', message: '下架成功' });
-        //发请求获取当前更新完毕的全部已有的SKU
         getHasSku(pageNo.value);
 
     } else {
-        //下架操作
         await reqSaleSku((row.id as number));
-        //提示信息
         ElMessage({ type: 'success', message: '上架成功' });
-        //发请求获取当前更新完毕的全部已有的SKU
         getHasSku(pageNo.value);
     }
 }
-//更新已有的SKU
 const updateSku = () => {
     ElMessage({ type: 'success', message: '程序员在努力的更新中....' })
 }
-//查看商品详情按钮的回调
 const findSku = async (row: SkuData) => {
-    //抽屉展示出来
     drawer.value = true;
-    //获取已有商品详情数据
     let result: SkuInfoData = await reqSkuInfo((row.id as number));
-    //存储已有的SKU
     skuInfo.value = result.data;
 }
-//删除某一个已有的商品
 const removeSku = async (id: number) => {
-    //删除某一个已有商品的情况
     let result: any = await reqRemoveSku(id);
     if (result.code == 200) {
-        //提示信息
         ElMessage({ type: 'success', message: '删除成功' });
-        //获取已有全部商品
         getHasSku(skuArr.value.length > 1 ? pageNo.value : pageNo.value - 1);
     } else {
-        //删除失败
         ElMessage({ type: 'error', message: '系统数据不能删除' });
     }
 }
