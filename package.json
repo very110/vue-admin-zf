@@ -7,7 +7,6 @@
     "dev": "vite --open",
     "build": "vite build",
     "preview": "vite preview",
-    "preinstall": "node ./scripts/preinstall.js",
     "lint": "eslint src",
     "fix": "eslint src --fix"
   },
