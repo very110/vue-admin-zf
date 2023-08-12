@@ -371,6 +371,8 @@ const switchTheme=(theme:string)=>{
     position: fixed;
     width: 100vw;
     height: 100vh;
+    backdrop-filter: blur(2px);
+    background-color: transparent;
 }
 
 .mask {
@@ -384,9 +386,12 @@ const switchTheme=(theme:string)=>{
     border-radius: 50%;
   box-sizing: initial;
   transform: translateX(-50%);
-    outline: 200vmax solid rgba(0,0,0,.5);
+  outline: 200vmax solid rgba(0,0,0,.5);
     .gg{
         width: 100%;
+        position:absolute;
+        left:0;
+        top: 50%;  width: 100%;
         position:absolute;
         left:0;
         top: 50%;

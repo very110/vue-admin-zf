@@ -125,6 +125,13 @@ defineExpose({
   }
 }
 
+@media (width<400px) {
+    .scale {
+        transform: scale(.5);
+    }
+}
+
+
 
 .list-enter-active,
 .list-leave-active {

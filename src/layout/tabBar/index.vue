@@ -27,13 +27,15 @@
             <div class="smallFeature">
                 <div class="el-deep">
                    <div class="search">
-                       <el-input :style="{width:inputWidth,'z-index':inputZIndex}" v-model="filterKey" placeholder="搜索" @focus="handlerFocus">
-                           <template #prefix>
-                               <el-icon :size="18" :color="themeColor.textColor">
-                                   <Search/>
-                               </el-icon>
-                           </template>
-                       </el-input>
+                      <div ref="maskShowInput" class="mask-show">
+                          <el-input :style="{width:inputWidth,'z-index':inputZIndex}" v-model="filterKey" placeholder="搜索" @focus="handlerFocus">
+                              <template #prefix>
+                                  <el-icon :size="18" :color="themeColor.textColor">
+                                      <Search/>
+                                  </el-icon>
+                              </template>
+                          </el-input>
+                      </div>
                        <div class="dropdown" v-show="dropdown">
                            <div  v-show="searchHistory.length>0">
                                <div class="title" ><div class="title-left">搜索历史</div><div class="title-right" @click="clearHistory">清空</div></div>
@@ -41,7 +43,7 @@
                                    <ul>
                                        <li v-for="(item,index) in searchHistoryCom" :key="$v1()">
                                            <el-tag  closable @close="handleClose(item,index)">
-                                               <router-link :style="{'text-decoration':'none',color:'#000'}" @click="jumpClick(item)" :to="item.path">{{item.meta.title}}</router-link>
+                                               <router-link :style="{'text-decoration':'none',color:'#000'}" @click="jumpClick(item)" :to="item.path" >{{item.meta.title}}</router-link>
                                            </el-tag>
                                        </li>
                                    </ul>
@@ -52,7 +54,8 @@
                                <ul v-show="searchResult.length>0">
                                    <li v-for="(item,index) in searchResult" :key="$v1()">
                                        <el-tag>
-                                           <router-link :style="{'text-decoration':'none',color:'#000'}" @click="jumpClick(item)" :to="item.path">{{item.meta.title}}</router-link>
+
+                                           <router-link :style="{'text-decoration':'none',color:'#000'}" @click="jumpClick(item)" :to="item.path"  v-html="handlerKey(item.meta.title)"></router-link>
                                        </el-tag>
                                    </li>
                                </ul>
@@ -62,21 +65,29 @@
                    </div>
                     <div class="mask" @click="disappearClick" v-show="dropdown"></div>
                 </div>
-                <el-button size="small" circle title="刷新表格数据" :color="themeColor.bgColor" @click="clickRefresh">
-                    <el-icon size="16" :color="themeColor.textColor">
-                        <Refresh></Refresh>
-                    </el-icon>
-                </el-button>
-                <el-button size="small" title="全屏" circle @click="fullScreen" :color="themeColor.bgColor">
-                    <el-icon :size="16" :color="themeColor.textColor">
-                        <FullScreen/>
-                    </el-icon>
-                </el-button>
-                <el-button size="small" title="切换主题" circle @click="switchTheme" :color="themeColor.bgColor">
-                    <el-icon :size="16" :color="themeColor.textColor">
-                        <component :is="theme==='dark'?'MoonNight':'Sunny'"></component>
-                    </el-icon>
-                </el-button>
+                <div ref="maskShowRefresh" class="mask-show">
+                    <el-button size="small" circle title="刷新表格数据" :color="themeColor.bgColor" @click="clickRefresh">
+                        <el-icon size="16" :color="themeColor.textColor">
+                            <Refresh></Refresh>
+                        </el-icon>
+                    </el-button>
+                </div>
+
+                <div ref="maskShowScreen" class="mask-show">
+                    <el-button size="small" title="全屏" circle @click="fullScreen" :color="themeColor.bgColor">
+                        <el-icon :size="16" :color="themeColor.textColor">
+                            <FullScreen/>
+                        </el-icon>
+                    </el-button>
+                </div>
+                <div ref="maskShowTheme" class="mask-show">
+                    <el-button size="small" title="切换主题" circle @click="switchTheme" :color="themeColor.bgColor">
+                        <el-icon :size="16" :color="themeColor.textColor">
+                            <component :is="theme==='dark'?'MoonNight':'Sunny'"></component>
+                        </el-icon>
+                    </el-button>
+                </div>
+
             </div>
             <div class="exitLogin">
                 <el-dropdown :show-timeout="100">
@@ -105,8 +116,9 @@ import {getTheme, setTheme, themeColor} from "@/utils/themes.ts";
 import useLayOutSettingStore from "@/store/module/setting.ts";
 import {useRoute, useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
-import {computed, nextTick, reactive, ref} from "vue";
+import {computed, nextTick, onMounted, reactive, ref} from "vue";
 import {useUserStore} from "@/store/module/user.ts";
+import {useMaskStore} from "@/store/module/mask.ts";
 
 
 
@@ -120,15 +132,38 @@ let dropdown=ref(false);
 let inputWidth=ref('35px');
 let inputZIndex=ref(0);
 let searchHistory=ref(JSON.parse(localStorage.getItem('searchHistory'))||[]);
-
+let maskShowInput=ref();
+let maskShowTheme=ref();
+let maskShowScreen=ref();
+let maskShowRefresh=ref();
+let maskStore=useMaskStore();
 let searchHistoryCom= computed(()=>{
 
     return searchHistory.value;
 })
+
+onMounted(()=>{
+    let oneLayout=localStorage.getItem('Layout')||false;
+    if (!oneLayout){
+        maskStore.maskPush(maskShowInput.value,0,'点击此处可对菜单栏进行搜索并跳转');
+        maskStore.maskPush(maskShowRefresh.value,1,'点击此处可对下方进行刷新');
+        maskStore.maskPush(maskShowScreen.value,2,'点击此处可进入全屏模式');
+        maskStore.maskPush(maskShowTheme.value,3,'点击此处可切换主题');
+    }
+})
+
 const handlerFocus = () => {
     dropdown.value=true;
     inputWidth.value='130px';
     inputZIndex.value=9999;
+}
+const handlerKey=(title:string)=>{
+    const reg=new RegExp(filterKey.value,'i');
+      // noinspection TypeScriptValidateTypes
+    title=title.replace(reg,function (key){
+          return `<em style="color:red">${key}</em>`
+    })
+    return title;
 }
 const disappearClick=()=>{
     dropdown.value=false;
@@ -169,6 +204,7 @@ const jumpClick=(item)=>{
         arr.unshift(item);
         localStorage.setItem('searchHistory',JSON.stringify(arr));
     }
+    disappearClick();
 }
 const searchResult =computed(()=>{
     return filterMenuSearch(userStore.menuRoutes,filterKey.value);
@@ -311,6 +347,7 @@ const exitLogin = async () => {
                     justify-content: center;
                     align-items: center;
                 }
+
             }
             ul{
                 margin-top: 10px;

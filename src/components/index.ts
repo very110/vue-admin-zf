@@ -3,7 +3,8 @@ import type { App, Component } from 'vue';
 import FormPlus from "./el/FormPlus/src/index.vue";
 import TablePlus from "./el/TablePlus/src/TablePlus.vue";
 import Category from "./Category/index.vue"
-const components: { [name: string]: Component } = { SvgIcon,FormPlus,TablePlus,Category};
+import Mask from "./mask/index.vue";
+const components: { [name: string]: Component } = { SvgIcon,FormPlus,TablePlus,Category,Mask};
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
 export default {

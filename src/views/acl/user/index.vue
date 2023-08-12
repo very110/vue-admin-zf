@@ -6,8 +6,8 @@
                   <el-input placeholder="请你输入搜索用户名" v-model="keyword"></el-input>
               </el-form-item>
               <el-form-item>
-                  <el-button  type="primary" size="default" @click="search" >搜索</el-button>
-                  <el-button type="primary" size="default" @click="resetKeyword" :disabled="!keyword">重置</el-button>
+                 <div style="display: flex;justify-content: center;align-items: center"> <el-button  type="primary" size="default" @click="search" >搜索</el-button>
+                     <el-button type="primary" size="default" @click="resetKeyword" :disabled="!keyword">重置</el-button></div>
               </el-form-item>
           </el-form>
       </el-card>

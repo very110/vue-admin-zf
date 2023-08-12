@@ -1,0 +1,6 @@
+{
+    "version": 2,
+    "routes": [
+      {"src": "/api/(.*)","dest": "http://sph-api.atguigu.cn/$1"}
+    ]
+}

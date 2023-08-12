@@ -29,6 +29,13 @@
             </div>
             <div class="mask" @click="LayOutSettingStore.fold=!LayOutSettingStore.fold"></div>
         </div>
+        <Mask
+                @confirm="maskConfirm"
+                @clearMask="maskClear"
+                v-if="!oneLayout&&maskStore.status"
+                :width="curElement?.width+10"
+              :height="curElement?.height+10" :left="curElement?.left-5" :top="curElement?.top-5"
+              :message="curElement?.message"></Mask>
     </div>
 </template>
 
@@ -42,11 +49,51 @@
 
   import {useRoute} from "vue-router";
   import {useUserStore} from "@/store/module/user.ts";
+  import {useMaskStore} from "@/store/module/mask.ts";
+  import {ref, watch} from "vue";
     let LayOutSettingStore=useLayOutSettingStore();
   const menuHandleOpen=()=>{}
   const menuHandleClose=()=>{}
   let $router =useRoute();
 const UserStore=useUserStore();
+  let maskStore=useMaskStore();
+  maskStore.requiredQuantity=4;
+  let curElement =ref(null);
+  let firstElement =null;
+  let oneLayout=localStorage.getItem('Layout')||false;
+
+  const maskConfirm=()=>{
+      firstElement.style.zIndex=0;
+      firstElement =maskStore.maskPop();
+      curElement.value=firstElement.getBoundingClientRect();
+      firstElement.style.zIndex=9999;
+      Object.assign(curElement.value,{message:firstElement.message})
+  }
+
+  const maskClear=()=>{
+      firstElement.style.zIndex=0;
+      if (!oneLayout){
+          localStorage.setItem('Layout', 'Layout');
+      }
+      maskStore.$reset();
+  }
+
+
+  let maskWatch=watch(()=>maskStore.maskQueue.length,()=>{
+
+      if (maskStore.requiredQuantity==maskStore.maskQueue.length) maskStore.status=true;
+
+      if (maskStore.status){
+          setTimeout(()=>{
+              firstElement=maskStore.maskPop();
+              curElement.value=firstElement.getBoundingClientRect();
+              firstElement.style.zIndex=9999;
+              Object.assign(curElement.value,{message:firstElement.message})
+              maskWatch();
+          },600)
+      }
+
+  })
 </script>
 
 

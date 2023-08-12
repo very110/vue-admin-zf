@@ -9,10 +9,14 @@
 </template>
 
 <script setup lang="ts">
+
 import {getTheme,setTheme} from "@/utils/themes.ts";
 import {Action, ElMessage, ElMessageBox} from "element-plus";
+
 let theme=getTheme();
 setTheme(theme);
+
+
 
 const offlineTasks=()=>{
     ElMessage({
