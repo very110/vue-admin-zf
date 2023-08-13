@@ -40,3 +40,4 @@ npm run dev
 ## 部分功能截图
 ![Image text](https://cdn.jsdelivr.net/gh/very110/CSS-effects/text1.gif)
 ![Image text](https://cdn.jsdelivr.net/gh/very110/CSS-effects/text2.gif)
+![Image text](https://cdn.jsdelivr.net/gh/very110/CSS-effects/20230813213507.png)
