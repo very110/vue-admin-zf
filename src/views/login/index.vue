@@ -171,6 +171,7 @@ import {useRoute, useRouter} from "vue-router";
 import jsonp from "jsonp";
 import {getTheme,setTheme} from '@/utils/themes.ts';
 import {useIsNewUser}  from "@/hooks/isNewUser.ts"
+import {useCoordsStore} from "@/store/module/coords.ts";
 
 
 let effect=getTheme();
@@ -201,6 +202,7 @@ let isLocation = ref(false);
 
 const useStore = useUserStore();
 
+let CoordsStore =useCoordsStore();
 interface coords {
     latitude: number,//经度
     longitude: number//纬度
@@ -214,6 +216,8 @@ onMounted(()=>{
     navigator.geolocation.getCurrentPosition((res: any) => {
         coords.latitude = res.coords.latitude;
         coords.longitude = res.coords.longitude;
+        CoordsStore.latitude=res.coords.latitude;
+        CoordsStore.longitude=res.coords.latitude;
         isLocation.value = true;
     }, (err) => {
         ElNotification({
@@ -256,15 +260,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
             time='早上好'
         }
         if (isLocation.value) {
-
             jsonp(`https://api.map.baidu.com/reverse_geocoding/v3/?ak=${import.meta.env.VITE_BAIDU_API}&output=json&coordtype=wgs84ll&location=${coords.latitude},${coords.longitude}`, {
                 timeout: 3000,
             }, (err, data) => {
                 if (err) {
-
                 } else {
-
-
+                    CoordsStore.formatted_address=data.result.formatted_address;
                     let address = data.result.addressComponent.province + data.result.addressComponent.city;
                     ElNotification({
                         title: 'Success',
