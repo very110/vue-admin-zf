@@ -76,10 +76,9 @@ let CoordsStore=useCoordsStore();
 let refresh=ref();
 
 onMounted(()=> {
+    initMap(CoordsStore.latitude,CoordsStore.longitude,CoordsStore.formatted_address);
     if (!CoordsStore.formatted_address){
         CoordsStore.getCoords(initMap);
-    }else{
-        initMap(CoordsStore.latitude,CoordsStore.longitude,CoordsStore.formatted_address);
     }
     initChart();
     initLineChart();
@@ -130,8 +129,6 @@ const initMap=(latitude,longitude,formatted_address)=>{
      local = new BMap.LocalSearch(map, {
         renderOptions:{map: map}
     });
-     local.search(formatted_address||'福建')
-
 }
 
 const initChart=()=>{
@@ -341,7 +338,7 @@ const initHistogram=()=>{
 #container,#pieChart,#LineChart,#histogram{
   width: 450px;
   height: 400px;
-  resize: both;
+  resize: horizontal;
   overflow: hidden;
 }
 
@@ -445,4 +442,11 @@ const initHistogram=()=>{
     }
 }
 
+@media (width<500px) {
+    .header{
+        grid-template-columns:repeat(2,1fr);
+        grid-auto-rows: 400px;
+    }
+
+}
 </style>

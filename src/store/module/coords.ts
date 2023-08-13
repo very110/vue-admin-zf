@@ -17,7 +17,7 @@ export const useCoordsStore = defineStore('Coords', {
                 this.longitude = res.coords.longitude;
 
                 jsonp(`https://api.map.baidu.com/reverse_geocoding/v3/?ak=${import.meta.env.VITE_BAIDU_API}&output=json&coordtype=wgs84ll&location=${res.coords.latitude},${res.coords.longitude}`, {
-                    timeout: 2000,
+                    timeout: 1000,
                 }, (err, data) => {
                     if (err) {
                         initMap()
@@ -31,7 +31,7 @@ export const useCoordsStore = defineStore('Coords', {
                     initMap()
                 ElNotification({
                     title: 'Success',
-                    message: '你拒绝了或未开启定位,默认定位福建',
+                    message: '你拒绝了或未开启定位,默认定位北京',
                     type: 'warning',
                     duration: 1500
                 })
