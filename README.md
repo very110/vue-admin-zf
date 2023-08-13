@@ -37,6 +37,6 @@ npm run dev
 -   [x] 数据前后对比检测是否修改
 -   [x] 添加、删除、修改spu和sku
 
-## 部分截图
+## 部分功能截图
 ![Image text](https://cdn.jsdelivr.net/gh/very110/CSS-effects/text1.gif)
 ![Image text](https://cdn.jsdelivr.net/gh/very110/CSS-effects/text2.gif)
