@@ -2,7 +2,8 @@
   <div class="mask-warp">
     <div class="mask" :style="{width:w+'px',height:w+'px',left:left+'px',top:top+'px'}">
         <el-tooltip
-                :visible="true"
+                ref="myTooltip"
+                    :visible="true"
                     :effect="effect"
                     :teleported="false"
                     :offset="50">
@@ -21,7 +22,7 @@
 </template>
 
 <script setup lang="ts" name="Mask">
-import {computed, toRefs} from "vue";
+import {computed, onMounted, ref, toRefs} from "vue";
 import {getTheme, themeColor} from "@/utils/themes.ts";
 import {useMaskStore} from "@/store/module/mask.ts";
 let effect=getTheme();
@@ -41,7 +42,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emit=defineEmits(['confirm','clearMask'])
-
+let myTooltip=ref()
 const confirmClick=()=>{
     if (mask.maskQueue.length<=0){
         clearMaskClick()
@@ -58,8 +59,11 @@ const {width,height,left,top,message}=toRefs(props);
 let w=computed(()=>{
     return Math.max(width.value,height.value);
 })
-
-
+onMounted(()=>{
+    setTimeout(()=>{
+        myTooltip.value.updatePopper()
+    },700)
+})
 </script>
 
 
