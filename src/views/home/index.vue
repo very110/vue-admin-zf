@@ -355,9 +355,28 @@ const initHistogram=()=>{
   width: 450px;
   height: 400px;
   resize: horizontal;
-  overflow: hidden;
-    min-width: 200px;
+  overflow: scroll !important;
+  min-width: 250px;
+
+    &::-webkit-scrollbar{
+        /* px-to-viewport-ignore-next */
+        width: 20px;
+        height: 20px;
+    }
+
+    &::-webkit-resizer{
+        @include themeColors{
+            background-color:getThemeValues(menuAndTabbarBG)
+        }
+        background-image:url("/drop.svg");
+        background-blend-mode:hard-light;
+        background-size:100% 100%;
+        background-repeat: no-repeat;
+
+    }
 }
+
+
 
 .header{
     display: grid;
