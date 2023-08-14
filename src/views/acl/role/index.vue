@@ -3,7 +3,7 @@
         <el-card>
             <el-form :inline="true" class="form">
                 <el-form-item label="用户名:">
-                    <el-input placeholder="请你输入搜索用户名" v-model="keyword"></el-input>
+                    <el-input placeholder="请你输入搜索用户名" v-model="keyword" style="min-width: 30px"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <div style="display: flex;justify-content: center;align-items: center">
@@ -32,7 +32,7 @@
         <el-dialog
                 v-model="dialogVisible"
                 :title="`${positionName.id?'修改':'添加'}职位`"
-                width="30%"
+                class="phone-W-60"
 
         >
           <template #default>
@@ -51,7 +51,7 @@
       </span>
             </template>
         </el-dialog>
-        <el-drawer v-model="drawer" title="分配菜单与按钮的权限" :with-header="true">
+        <el-drawer v-model="drawer" title="分配菜单与按钮的权限" :with-header="true"  class="phone-W-60">
             <el-tree
                     ref="myThee"
                     :props="treeProps"
@@ -248,5 +248,7 @@ onMounted(() => {
   align-items: center;
   height: 50px;
 }
-
+.role :deep(.el-input__inner){
+  min-width: 30px;
+}
 </style>

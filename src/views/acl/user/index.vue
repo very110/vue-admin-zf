@@ -30,7 +30,7 @@
             </template>
           </TablePlus>
       </el-card>
-      <el-drawer v-model="drawer" title="分配角色" :with-header="true">
+      <el-drawer v-model="drawer" title="分配角色" :with-header="true" class="phone-W-60">
 
           <template #footer>
               <el-button type="primary" @click="confirmClick">确定</el-button>
@@ -56,7 +56,7 @@
               </el-form-item>
           </el-form>
       </el-drawer>
-      <el-drawer v-model="drawer1" :title="`${userParams.id?'修改':'添加'}角色`" :with-header="true">
+      <el-drawer v-model="drawer1" :title="`${userParams.id?'修改':'添加'}角色`" :with-header="true" class="phone-W-60">
           <el-form ref="myForm" :model="userParams">
               <el-form-item label="用户姓名" prop="username" :rules="[{ required: true, message: '必须输入用户姓名', trigger: 'blur' }]">
                   <el-input v-model="userParams.username" ></el-input>
@@ -262,7 +262,6 @@ const confirmClick=async ()=>{
 }
 </script>
 
-
 <style scoped lang="scss">
 
 .form{
@@ -272,4 +271,9 @@ const confirmClick=async ()=>{
   height: 50px
 ;
 }
+
+.user :deep(.el-input__inner){
+    min-width: 30px;
+}
+
 </style>

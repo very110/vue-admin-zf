@@ -91,6 +91,14 @@ window.addEventListener('offline',offlineTasks)
     width: 2px;
 }
 
+@media (width <= 900px) {
+    .phone-W-60{
+        width: 60% !important;
+    }
+}
+
+
+
 
 .el-card__body{
     @include themeColors{

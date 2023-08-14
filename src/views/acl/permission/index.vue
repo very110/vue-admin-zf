@@ -17,7 +17,7 @@
       <el-dialog
               v-model="dialogVisible"
               :title="`${menuData.id?'更新':'添加'}菜单`"
-              width="30%"
+              class="phone-W-60"
       >
 
           <template #default>
