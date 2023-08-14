@@ -356,6 +356,7 @@ const initHistogram=()=>{
   height: 400px;
   resize: horizontal;
   overflow: hidden;
+    min-width: 200px;
 }
 
 .header{
