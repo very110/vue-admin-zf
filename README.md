@@ -18,7 +18,9 @@ npm run dev
 
 
 ## 效果演示
-[戳这里体验]()
+需要多次体验镂空遮罩把localStorage清楚了就可以
+
+[戳这里体验](https://vue-admin-zf.vercel.app/)
 
 
 
