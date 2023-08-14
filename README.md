@@ -20,7 +20,7 @@ npm run dev
 ## 效果演示
 需要多次体验镂空遮罩把localStorage清除了就可以
 
-部署在vercel可能需要开梯子才能访问
+国内可能需要魔法才能访问
 [戳这里体验](https://vue-admin-zf.vercel.app/)
 
 
