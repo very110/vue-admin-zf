@@ -8,8 +8,8 @@
                       <div class="text"><span>姓名:admin</span><span>简介:见过css,听说过js</span></div>
                   </div>
                   <div class="right-userName">
-                      <div>github地址: <a href="https://github.com/very110" target="_blank">https://github.com/very110</a></div>
-                      <div>gitee地址: <a href="https://gitee.com/zhao-feng-zhang" target="_blank">https://gitee.com/zhao-feng-zhang</a></div>
+                      <div>github地址: <a href="https://github.com/very110" target="_blank" class="bgUnderline">https://github.com/very110</a></div>
+                      <div>gitee地址: <a href="https://gitee.com/zhao-feng-zhang" target="_blank" class="bgUnderline">https://gitee.com/zhao-feng-zhang</a></div>
                   </div>
               </div>
           </el-card>
@@ -137,16 +137,18 @@ const initChart=()=>{
 
     option = {
         title: {
-
             subtext: '用户分布',
-            left: 'center'
+            left: 'center',
         },
         tooltip: {
             trigger: 'item'
         },
         legend: {
             orient: 'vertical',
-            left: 'left'
+            left: 'left',
+            textStyle: {
+                color: '#B0CEFC'  // 图例文字颜色
+            }
         },
         series: [
             {
@@ -190,7 +192,10 @@ const initLineChart=()=>{
             }
         },
         legend: {
-            data: ['北京', '上海', '广东', '深圳', '福建']
+            data: ['北京', '上海', '广东', '深圳', '福建'],
+            textStyle: {
+                color: '#B0CEFC'  // 图例文字颜色
+            }
         },
         toolbox: {
             feature: {
@@ -323,7 +328,17 @@ const initHistogram=()=>{
   width: fit-content;
   height: fit-content;
 }
-
+.bgUnderline{
+    line-height: 1.5;
+    background-image: linear-gradient(to right,red,yellow,blue);
+    background-size: 0% 3px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: .3s linear;
+}
+.bgUnderline:hover{
+    background-size: 100% 3px;
+}
 .refresh{
   width: fit-content;
   cursor:pointer;
