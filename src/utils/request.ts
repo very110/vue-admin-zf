@@ -26,6 +26,26 @@ const retry:Function=(method:string,url:string,count:number)=>{
            return Promise.reject(err)
         }
     })
+    // try {
+    //     let result = await request({
+    //         method,
+    //         url,
+    //         headers: {
+    //             noRetry: true
+    //         }
+    //     })
+    //     return result;
+    // } catch (e) {
+    //     if (count > 0) {
+    //         return await new Promise((resolve, reject) => {
+    //             setTimeout(() => {
+    //                 resolve(retry(method, url, count - 1));
+    //             }, 2500)
+    //         })
+    //     } else {
+    //         return Promise.reject(e)
+    //     }
+    // }
 }
 request.interceptors.request.use( (config)=>{
     let userStore=useUserStore();
@@ -64,7 +84,6 @@ request.interceptors.response.use( (response)=>{
         default:
            try {
                if (method==='get'&&!error.config.headers.noRetry){
-                   console.log(error.config.headers.noRetry)
                    let result =await retry(method,url,retryMap.get(url));
                    console.log(result);
                    retryMap.delete(url)

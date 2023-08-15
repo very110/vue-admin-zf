@@ -5,7 +5,7 @@
               <div class="userInfo">
                   <div class="left-userName">
                       <img src="https://tse1-mm.cn.bing.net/th/id/OIP-C.RR6081d7yzmAye6o8mNUggAAAA?w=200&h=201&c=7&r=0&o=5&dpr=1.3&pid=1.7">
-                      <div class="text"><span>姓名:admin</span><span>简介:见过css,听说过js</span></div>
+                      <div class="text"><span>姓名:admin</span><span style="line-height:1.5">简介:见过css,听说过js</span></div>
                   </div>
                   <div class="right-userName">
                       <div>github地址: <a href="https://github.com/very110" target="_blank" class="bgUnderline">https://github.com/very110</a></div>
@@ -469,7 +469,8 @@ const initHistogram=()=>{
     }
     .ggc2{
         display: flex;
-        font-size:24px;
+        /* px-to-viewport-ignore-next */
+        font-size:clamp(16px,1.876vw,24px);
         justify-content: center;
         align-items: center;
         @include themeColors{
