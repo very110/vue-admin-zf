@@ -28,6 +28,7 @@ npm run dev
 ## 功能
 -   [x] 对Element Plus的Table和Form进行了二次封装
 -   [x] 使用scss封装主题
+-   [x] 对get请求做了请求重试
 -   [x] ip定位
 -   [x] 响应式布局
 -   [x] 登录/注销
