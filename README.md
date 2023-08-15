@@ -29,7 +29,7 @@ npm run dev
 -   [x] 对Element Plus的Table和Form进行了二次封装
 -   [x] 使用scss封装主题
 -   [x] ip定位
--   [x] 响应式处理
+-   [x] 响应式布局
 -   [x] 登录/注销
 -   [x] 图表/地图
 -   [x] 搜索栏搜索当前权限页面并跳转
